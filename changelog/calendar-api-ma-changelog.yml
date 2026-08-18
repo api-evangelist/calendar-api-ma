@@ -1,0 +1,58 @@
+generated: '2026-08-18'
+method: searched
+source: https://docs.calendar-api.ma/CHANGELOG/ + https://gitlab.com/api/v4/projects/79644191/releases
+scope: sdk
+note: >-
+  IMPORTANT SCOPE NOTE: this is the changelog of the first-party Python SDK (pycalendar-api), not of the
+  Calendar API itself. The API publishes no changelog, no release notes and no version history — the only
+  API version signal is the /api/v1/ URI segment. The SDK changelog follows Keep a Changelog and Semantic
+  Versioning and is mirrored as dated GitLab releases. Entry 0.5.0/0.5.1 appear as GitLab releases but had
+  not yet been written into the published CHANGELOG page at the time of this pass, so their descriptions
+  below come from the release titles.
+scheme: semver
+format: Keep a Changelog
+current_version: 0.5.1
+current_version_date: '2026-05-15'
+url: https://docs.calendar-api.ma/CHANGELOG/
+releases_url: https://gitlab.com/ud-labs/py-calendar-api/-/releases
+entries:
+  - version: 0.5.1
+    date: '2026-05-15'
+    breaking: false
+    highlights:
+      - Fix documentation generation.
+    source: gitlab-release
+  - version: 0.5.0
+    date: '2026-05-15'
+    breaking: false
+    additions:
+      - Automatic generation of the reference documentation.
+    source: gitlab-release
+  - version: 0.4.0
+    date: '2026-05-14'
+    breaking: false
+    highlights:
+      - 'Refactoring: drop niquests in favour of httpxyz as the HTTP client.'
+      - 'Bug fix: DateSeries min_date and max_date were not deserialised as datetime.date.'
+      - 'Tests: first pytest suite (boundary testing) covering deserialisation, data structures and calendar logic.'
+      - 'Docs: index page rewritten; how-it-works section added.'
+    source: changelog
+  - version: 0.3.0
+    date: '2026-03-07'
+    breaking: false
+    highlights:
+      - 'Refactoring: drop htmx in favour of niquests.'
+    source: changelog
+  - version: 0.2.1
+    date: '2026-03-06'
+    breaking: false
+    highlights:
+      - PyPI publishing added; licence adapted; unused dependencies removed; Pages publishing step added.
+    source: changelog
+  - version: 0.1.0
+    date: '2026-03-05'
+    breaking: false
+    additions:
+      - Python client for calendar-api.ma with a centralised CalendarApi entry point and dataclass responses.
+    source: changelog
+entry_count: 6

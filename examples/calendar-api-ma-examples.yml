@@ -1,0 +1,114 @@
+generated: '2026-08-18'
+method: derived
+source: >-
+  openapi/calendar-api-ma-calendar-api-openapi.yml
+  (parameter-level examples published in the spec) + provider code samples published on
+  https://calendar-api.ma/ , https://calendar-api.ma/holidays-api.html and
+  https://calendar-api.ma/bdays-api.html
+note: >-
+  Every value below is published by the provider — either as an OpenAPI parameter `examples` entry or as a
+  code sample on the provider's own site. No response payload was invented: the raw JSON responses are not
+  reproduced because calling the API requires a key we do not hold, so the SDK-level return values the
+  provider prints in its own documentation are recorded instead, marked as such. Note the date format
+  divergence worth knowing before the first call: the REST parameters carry ISO `YYYY-MM-DD` examples
+  (2025-11-17), while the Python SDK samples use a `to_date('14/01/2025')` helper on `DD/MM/YYYY`.
+request_examples:
+  - operationId: ApiV1HolidaysIsHolidayIsHoliday
+    request: GET /api/v1/holidays/is-holiday?date=2026-11-06
+    published_examples:
+      - {summary: Date 1, value: '2025-07-22'}
+      - {summary: Date 2, value: '2025-12-02'}
+      - {summary: Marche Verte, value: '2026-11-06'}
+  - operationId: ApiV1HolidaysHolidays
+    request: GET /api/v1/holidays?description=tr%C3%B4&holiday_type=ND&day=14&month=1
+    published_examples:
+      - {parameter: description, summary: 'Search `Fête du trône`', value: 'trô'}
+      - {parameter: description, summary: 'Search `Fête du travail`', value: Trava}
+      - {parameter: description, summary: 'Search `Nouvel An Amazigh`', value: Amaz}
+      - {parameter: holiday_type, summary: 'null: Disable this filter', value: ND}
+      - {parameter: day, summary: Day = 14, value: 14}
+      - {parameter: month, summary: Month = 5, value: 5}
+  - operationId: ApiV1HolidaysYearHolidaysYear
+    request: GET /api/v1/holidays/2025
+    published_examples:
+      - {parameter: year, summary: Year 2025, value: 2025}
+      - {parameter: year, summary: Year 2026, value: 2026}
+  - operationId: ApiV1BdaysNextBdaysNext
+    request: GET /api/v1/bdays/next?date=2025-11-17
+    published_examples:
+      - {summary: "Day before a holiday `fête de l'independance`", value: '2025-11-17'}
+      - {summary: A Friday, value: '2025-11-21'}
+  - operationId: ApiV1BdaysPreviousBdaysPrevious
+    request: GET /api/v1/bdays/previous?date=2025-11-19
+    published_examples:
+      - {summary: "Day after a holiday `fête de l'independance`", value: '2025-11-19'}
+      - {summary: A Monday, value: '2025-11-24'}
+  - operationId: ApiV1BdaysSpanQuarterSpanQuarter
+    request: GET /api/v1/bdays/span/quarter?year=2025&quarter=3
+    published_examples:
+      - {parameter: quarter, summary: Q1, value: 1}
+      - {parameter: quarter, summary: Q3, value: 3}
+  - operationId: ApiV1BdaysSpanSemesterSpanSemester
+    request: GET /api/v1/bdays/span/semester?year=2026&semester=1
+    published_examples:
+      - {parameter: semester, summary: S1, value: 1}
+      - {parameter: semester, summary: S2, value: 2}
+  - operationId: ApiV1BdaysYearMonthBdaysMonth
+    request: GET /api/v1/bdays/2025/7
+    published_examples:
+      - {parameter: month, summary: January, value: 1}
+      - {parameter: month, summary: July, value: 7}
+  - operationId: HealthHealth
+    request: GET /health
+    auth_required: false
+    observed_response:
+      status: 200
+      body: {api_status: UP, appname: calendar-api}
+      observed_at: '2026-08-18'
+sdk_examples:
+  language: python
+  package: pycalendar-api
+  source: https://calendar-api.ma/
+  note: Provider-published samples, quoted with the return values the provider prints in its own documentation.
+  samples:
+    - title: Check whether a date is a holiday
+      code: |
+        from pycalendar_api import CalendarApi, to_date
+        api = CalendarApi('YOUR_API_KEY')
+        result = api.holidays.is_holiday(to_date('14/01/2025'))
+      returns: >-
+        HolidayCheckResult(is_holiday=True, description="Nouvel An Amazigh", holiday_type='National',
+        status='Official')
+    - title: Next open business day
+      code: |
+        from pycalendar_api import CalendarApi, to_date
+        api = CalendarApi.from_env()   # export PYCALENDAR_APIKEY=YOUR_API_KEY
+        nxt = api.bdays.next_date(to_date('13/01/2025'))
+      returns: NextDate(date=datetime.date(2025, 1, 13), next_date=datetime.date(2025, 1, 15))
+    - title: Previous open business day
+      code: |
+        prev = api.bdays.previous_date(to_date('15/01/2025'))
+      returns: PreviousDate(date=datetime.date(2025, 1, 15), previous_date=datetime.date(2025, 1, 13))
+    - title: Count business days across a year
+      code: |
+        count = api.bdays.count(to_date('02/01/2025'), to_date('31/12/2025'))
+      returns: DaysCount(start_date=datetime.date(2025, 1, 2), end_date=datetime.date(2025, 12, 31), count=247)
+    - title: Business days of a month
+      code: |
+        june = api.bdays.bdays_of(2025, month=6)
+      returns: >-
+        DateSeries(ref='bdays-2025-06', min_date=datetime.date(2025, 6, 2),
+        max_date=datetime.date(2025, 6, 30), items=19, serie=SortedSet([...]))
+    - title: Span of a quarter
+      code: |
+        span = api.bdays.span(2025, quarter=3)
+      returns: >-
+        CalSpan(start_date=datetime.date(2025, 6, 30), end_date=datetime.date(2025, 9, 30), year=2025,
+        semester=None, quarter=3, month=None)
+    - title: List a year's holidays and isolate the estimated religious ones
+      code: |
+        holidays = api.holidays.year(2025)
+        religious = [h for h in holidays if h.holiday_type == 'Religious']
+        estimated = [h for h in religious if h.status == 'Estimated']
+      note: The provider recommends hourly polling until status flips to Official.
+example_count: 9

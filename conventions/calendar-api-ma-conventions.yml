@@ -1,0 +1,99 @@
+generated: '2026-08-18'
+method: derived
+source: >-
+  openapi/calendar-api-ma-calendar-api-openapi.yml +
+  https://calendar-api.ma/api/v1/docs + https://docs.calendar-api.ma/how-it-works/ + live response headers
+  observed 2026-08-18
+note: >-
+  Cross-cutting runtime semantics for Calendar API. The surface is small and entirely read-only — 14 GET
+  operations, no request bodies, no mutations — which removes several conventions from scope rather than
+  leaving them undocumented. IDEMPOTENCY IS NOT SUPPORTED AS A PROTOCOL FEATURE and no Idempotency pointer
+  is emitted in apis.yml: every operation is a safe GET and is therefore naturally idempotent, but there is
+  no Idempotency-Key header, no replay window and no retention policy, because there is nothing to make
+  idempotent. Do not read "all GETs" as an idempotency guarantee of the kind a write API publishes.
+auth:
+  style: api-key-header
+  header: X-API-KEY
+  alternative: session cookie ("session") for the browser console; not intended for programmatic use
+  key_management: https://calendar-api.ma/console/
+  keys_per_account: 5
+  signup: https://calendar-api.ma/console/register
+  signup_terms: Free self-serve registration, no payment card.
+  unauthenticated_endpoints:
+    - GET /health
+idempotency:
+  supported: false
+  header: null
+  scope: null
+  retention: null
+  rationale: >-
+    All 14 published operations are GET and safe. No write operations exist, so the provider publishes no
+    idempotency key mechanism. Retries are safe by method, not by contract.
+pagination:
+  supported: false
+  style: none
+  note: >-
+    No page/offset/cursor/limit parameter appears anywhere in the spec. Collection responses are returned
+    whole: /api/v1/holidays and /api/v1/holidays/{year} return a bare JSON array of Holiday; the business-day
+    listings return a SerieDatesEng envelope carrying ref, min_date, max_date, freq, nitems and the full
+    serie array. Bound result size with the filter parameters instead.
+filtering:
+  supported: true
+  parameters:
+    - name: description
+      applies_to: [ApiV1HolidaysHolidays, ApiV1HolidaysYearHolidaysYear]
+      note: Case-insensitive textual search with wildcard support; accents are respected.
+    - name: holiday_type
+      applies_to: [ApiV1HolidaysHolidays, ApiV1HolidaysYearHolidaysYear]
+      enum: [ND, Religious, National, Exceptional]
+      note: 'ND disables the filter — the provider uses ND as an explicit "not defined / no filter" sentinel across every enum.'
+    - name: day
+      applies_to: [ApiV1HolidaysHolidays, ApiV1HolidaysYearHolidaysYear]
+    - name: month
+      applies_to: [ApiV1HolidaysHolidays, ApiV1HolidaysYearHolidaysYear]
+field_expansion:
+  supported: false
+sparse_fieldsets:
+  supported: false
+metadata:
+  supported: false
+  note: No user-supplied metadata field exists; the API is a read-only reference dataset.
+request_id_tracing:
+  supported: false
+  note: >-
+    No X-Request-Id, X-Correlation-Id or trace header is documented or returned. Observed response headers on
+    GET /health and on a 401 are limited to Server (nginx/1.24.0 Ubuntu), Date, Content-Type, Content-Length,
+    Connection and a csrftoken Set-Cookie. There is no request identifier to quote in a support ticket.
+versioning:
+  style: uri-path
+  current: v1
+  see: lifecycle/calendar-api-ma-lifecycle.yml
+error_envelope:
+  media_type: application/json
+  rfc9457: false
+  shape: '{status_code: int, detail: string, extra: object|array|null}'
+  see: errors/calendar-api-ma-problem-types.yml
+rate_limit_signaling:
+  headers_observed: []
+  documented: false
+  see: rate-limits/calendar-api-ma-rate-limits.yml
+polling:
+  documented: true
+  note: >-
+    The provider documents a polling convention rather than an event one. Religious holidays carry
+    status "Estimated" until moon sighting; production consumers are told to poll (hourly is the published
+    suggestion) until status flips to "Official". There is no webhook, callback or event stream to subscribe
+    to, so polling is the only change-notification mechanism available.
+  source: https://calendar-api.ma/holidays-api.html
+data_conventions:
+  country_code: Responses carry an explicit country_code field; the dataset is Morocco-only.
+  weekends: >-
+    Saturday and Sunday are both treated as non-working days even though only Sunday is the official
+    Moroccan day off — a deliberate provider choice documented at https://docs.calendar-api.ma/how-it-works/.
+  history_model: SCD Type 2 — a holiday is absent for years in which it was not defined.
+  nd_sentinel: 'Every enum (CalHolidayType, CalHolidayStatus, CalFreq) carries an ND member meaning "not defined / disable this filter".'
+cross_links:
+  errors: errors/calendar-api-ma-problem-types.yml
+  lifecycle: lifecycle/calendar-api-ma-lifecycle.yml
+  authentication: authentication/calendar-api-ma-authentication.yml
+  rate_limits: rate-limits/calendar-api-ma-rate-limits.yml

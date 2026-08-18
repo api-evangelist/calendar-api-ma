@@ -1,0 +1,1488 @@
+info:
+  title: Calendar Api
+  version: v1
+  summary: Calendar API for Moroccan Holidays and Open Business Days
+  description: '
+
+    ## Try Calendar API
+
+
+    This interactive panel allows you to explore the whole API and to understand the different datastructures and parameters
+
+    used by every endpoint. You can also test every **active** APIKey you have.
+
+
+    ## Setup your APIKey
+
+
+    Copy any **active** APIKey from your console and set it in the `Authentication` side panel.
+
+
+    That''s it :-), now you can explore any endpoint
+
+
+    ## Holidays
+
+
+    This API allows to list, search and check if a `date` is a Moroccan holiday.
+
+
+    | Endpoint                 |                                                                                                                        Description
+    |
+
+    | ------------------------ | :---------------------------------------------------------------------------------------------------------------------------------
+    |
+
+    | **/holidays/is-holiday** |                                                                                          Checks
+    if a date is an `Official` Holiday |
+
+    | **/holidays/{year}**     |                                                                                                     List
+    the holidays of the year. |
+
+    | **/holidays**            |  Lists all national Holidays. Since Morocco is a Kingdom, there are some Holidays that depend
+    on the birthday of the current King. |
+
+
+    **N.B:**
+
+    Please note that if it''s a **future** `year`, the **religious holidays** are `Estimated` and not official because they
+    depend on the moon sighting.
+
+
+    Once confirmed, the Holiday becomes `Official` and the adequate flag will be updated accordingly.
+
+
+    ## Business Days (bdays)
+
+
+    This API calculates the `next` and `previous` **Open Business Day** of a date. You can also get the Open Days for a whole
+    year or any month of a year
+
+
+    | Endpoint                  | Description                                                                                     |
+
+    | ------------------------- | -----------------------------------------------------------------------------------------------
+    |
+
+    | **/bdays/{year}**         | Generate the Business days for the whole `year`                                                 |
+
+    | **/bdays/{year}/{month}** | Generate the Business days of a `month` of the `year`                                           |
+
+    | **/bdays/next**           | Calculate **the next** Open day relative to the provided `date`                                 |
+
+    | **/bdays/previous**       | Calculate **the previous** Open day relative to the provided `date`                             |
+
+    | **/bdays/count**          | Count the business days between 2 dates (included)                                              |
+
+    | **/bdays/between**        | List the business days between 2 dates (included)                                               |
+
+    | **/bdays/span/month**     | Calculate the interval (Start/End date) of a `month`. i.e: Interval of the month 5 of year
+    2025 |
+
+    | **/bdays/span/quarter**   | Calculate the interval (Start/End date) of a `quarter`. i.e: Interval of the Q2 of year
+    2024    |
+
+    | **/bdays/span/semester**  | Calculate the interval (Start/End date) of a `semester`. i.e: Interval of the S1 of year
+    2026   |
+
+    | **/bdays/span/year**      | Calculate the interval (Start/End date) of the `year`. i.e: Interval of the year 2021           |
+
+
+
+    ## Data dictionary
+
+
+    ### Holiday Type:
+
+
+    | Value           |                                                                  Description |
+
+    | --------------- | :--------------------------------------------------------------------------- |
+
+    | **National**    |                                               The date is a national Holiday |
+
+    | **Religious**   |  The date is a Religious Holiday (Check the status if it''s Confirmed or not) |
+
+    | **Exceptional** |                                           The date is an exceptional Holiday |
+
+
+    ### HolidayStatus (status)
+
+
+    | Value         |                                                Description |
+
+    | ------------- | :--------------------------------------------------------- |
+
+    | **Official**  |                                    The Holiday is Official |
+
+    | **Estimated** |  Religious Holidays are estimated before the moon sighting |
+
+
+    '
+  contact:
+    name: UNRAVEL DESIGNS
+    url: https://unraveldesigns.ma
+    email: ud@unraveldesigns.ma
+  license:
+    name: Proprietary
+openapi: 3.1.0
+servers:
+- url: https://calendar-api.ma
+  description: Casablanca (production) — resolved from the relative server "/" published in the original spec at https://calendar-api.ma/schema/openapi.json
+paths:
+  /health:
+    get:
+      tags:
+      - Misc
+      summary: API Health
+      operationId: HealthHealth
+      responses:
+        '200':
+          description: Request fulfilled, document follows
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemHealth'
+      deprecated: false
+  /api/v1/bdays/{year}/{month}:
+    get:
+      tags:
+      - Business Days
+      summary: BDays by month
+      operationId: ApiV1BdaysYearMonthBdaysMonth
+      parameters:
+      - name: year
+        in: path
+        schema:
+          type: integer
+          maximum: 9999.0
+          minimum: 1.0
+          title: year
+          description: Year
+          examples:
+          - 2025
+          - 2026
+        description: Year
+        required: true
+        deprecated: false
+        examples:
+          year-example-1:
+            summary: Year 2025
+            value: 2025
+          year-example-2:
+            summary: Year 2026
+            value: 2026
+      - name: month
+        in: path
+        schema:
+          oneOf:
+          - type: integer
+          - type: 'null'
+          maximum: 12
+          minimum: 1
+          description: Month of the Year
+          examples:
+          - 1
+          - 7
+        description: Month of the Year
+        required: true
+        deprecated: false
+        examples:
+          month-example-1:
+            summary: January
+            value: 1
+          month-example-2:
+            summary: July
+            value: 7
+      responses:
+        '200':
+          description: Request fulfilled, document follows
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerieDatesEng'
+        '400':
+          description: Bad request syntax or unsupported method
+          content:
+            application/json:
+              schema:
+                properties:
+                  status_code:
+                    type: integer
+                  detail:
+                    type: string
+                  extra:
+                    additionalProperties: {}
+                    type:
+                    - 'null'
+                    - object
+                    - array
+                type: object
+                required:
+                - detail
+                - status_code
+                description: Validation Exception
+                examples:
+                - status_code: 400
+                  detail: Bad Request
+                  extra: {}
+      deprecated: false
+  /api/v1/bdays/next:
+    get:
+      tags:
+      - Business Days
+      summary: Next day
+      operationId: ApiV1BdaysNextBdaysNext
+      parameters:
+      - name: date
+        in: query
+        schema:
+          type: string
+          format: date
+          examples:
+          - '2025-11-17'
+          - '2025-11-21'
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        allowReserved: false
+        examples:
+          adate-example-1:
+            summary: Day before a holiday `fête de l'independance`
+            value: '2025-11-17'
+          adate-example-2:
+            summary: A Friday
+            value: '2025-11-21'
+      responses:
+        '200':
+          description: Request fulfilled, document follows
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NextDate'
+        '400':
+          description: Bad request syntax or unsupported method
+          content:
+            application/json:
+              schema:
+                properties:
+                  status_code:
+                    type: integer
+                  detail:
+                    type: string
+                  extra:
+                    additionalProperties: {}
+                    type:
+                    - 'null'
+                    - object
+                    - array
+                type: object
+                required:
+                - detail
+                - status_code
+                description: Validation Exception
+                examples:
+                - status_code: 400
+                  detail: Bad Request
+                  extra: {}
+      deprecated: false
+  /api/v1/bdays/previous:
+    get:
+      tags:
+      - Business Days
+      summary: Previous day
+      operationId: ApiV1BdaysPreviousBdaysPrevious
+      parameters:
+      - name: date
+        in: query
+        schema:
+          type: string
+          format: date
+          examples:
+          - '2025-11-19'
+          - '2025-11-24'
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        allowReserved: false
+        examples:
+          adate-example-1:
+            summary: Day after a holiday `fête de l'independance`
+            value: '2025-11-19'
+          adate-example-2:
+            summary: A Monday
+            value: '2025-11-24'
+      responses:
+        '200':
+          description: Request fulfilled, document follows
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreviousDate'
+        '400':
+          description: Bad request syntax or unsupported method
+          content:
+            application/json:
+              schema:
+                properties:
+                  status_code:
+                    type: integer
+                  detail:
+                    type: string
+                  extra:
+                    additionalProperties: {}
+                    type:
+                    - 'null'
+                    - object
+                    - array
+                type: object
+                required:
+                - detail
+                - status_code
+                description: Validation Exception
+                examples:
+                - status_code: 400
+                  detail: Bad Request
+                  extra: {}
+      deprecated: false
+  /api/v1/bdays/{year}:
+    get:
+      tags:
+      - Business Days
+      summary: BDays by year
+      operationId: ApiV1BdaysYearBdaysYear
+      parameters:
+      - name: year
+        in: path
+        schema:
+          type: integer
+          maximum: 9999.0
+          minimum: 1.0
+          title: year
+          description: Year
+          examples:
+          - 2025
+          - 2026
+        description: Year
+        required: true
+        deprecated: false
+        examples:
+          year-example-1:
+            summary: Year 2025
+            value: 2025
+          year-example-2:
+            summary: Year 2026
+            value: 2026
+      responses:
+        '200':
+          description: Request fulfilled, document follows
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerieDatesEng'
+        '400':
+          description: Bad request syntax or unsupported method
+          content:
+            application/json:
+              schema:
+                properties:
+                  status_code:
+                    type: integer
+                  detail:
+                    type: string
+                  extra:
+                    additionalProperties: {}
+                    type:
+                    - 'null'
+                    - object
+                    - array
+                type: object
+                required:
+                - detail
+                - status_code
+                description: Validation Exception
+                examples:
+                - status_code: 400
+                  detail: Bad Request
+                  extra: {}
+      deprecated: false
+  /api/v1/bdays/count:
+    get:
+      tags:
+      - Business Days
+      summary: Count Business Days
+      operationId: ApiV1BdaysCountCountBdays
+      parameters:
+      - name: start
+        in: query
+        schema:
+          type: string
+          format: date
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        allowReserved: false
+      - name: end
+        in: query
+        schema:
+          type: string
+          format: date
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        allowReserved: false
+      responses:
+        '200':
+          description: Request fulfilled, document follows
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DaysCount'
+        '400':
+          description: Bad request syntax or unsupported method
+          content:
+            application/json:
+              schema:
+                properties:
+                  status_code:
+                    type: integer
+                  detail:
+                    type: string
+                  extra:
+                    additionalProperties: {}
+                    type:
+                    - 'null'
+                    - object
+                    - array
+                type: object
+                required:
+                - detail
+                - status_code
+                description: Validation Exception
+                examples:
+                - status_code: 400
+                  detail: Bad Request
+                  extra: {}
+      deprecated: false
+  /api/v1/bdays/between:
+    get:
+      tags:
+      - Business Days
+      summary: Business Days between dates
+      operationId: ApiV1BdaysBetweenDatesBetween
+      parameters:
+      - name: start
+        in: query
+        schema:
+          type: string
+          format: date
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        allowReserved: false
+      - name: end
+        in: query
+        schema:
+          type: string
+          format: date
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        allowReserved: false
+      responses:
+        '200':
+          description: Request fulfilled, document follows
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerieDatesEng'
+        '400':
+          description: Bad request syntax or unsupported method
+          content:
+            application/json:
+              schema:
+                properties:
+                  status_code:
+                    type: integer
+                  detail:
+                    type: string
+                  extra:
+                    additionalProperties: {}
+                    type:
+                    - 'null'
+                    - object
+                    - array
+                type: object
+                required:
+                - detail
+                - status_code
+                description: Validation Exception
+                examples:
+                - status_code: 400
+                  detail: Bad Request
+                  extra: {}
+      deprecated: false
+  /api/v1/bdays/span/month:
+    get:
+      tags:
+      - Business Days
+      summary: Span Month
+      operationId: ApiV1BdaysSpanMonthSpanMonth
+      parameters:
+      - name: year
+        in: query
+        schema:
+          type: integer
+          maximum: 9999.0
+          minimum: 1.0
+          title: year
+          description: Year
+          examples:
+          - 2025
+          - 2026
+        description: Year
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        allowReserved: false
+        examples:
+          year-example-1:
+            summary: Year 2025
+            value: 2025
+          year-example-2:
+            summary: Year 2026
+            value: 2026
+      - name: month
+        in: query
+        schema:
+          type: integer
+          maximum: 12.0
+          minimum: 1.0
+          description: Month of the Year
+          examples:
+          - 1
+          - 7
+        description: Month of the Year
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        allowReserved: false
+        examples:
+          month-example-1:
+            summary: January
+            value: 1
+          month-example-2:
+            summary: July
+            value: 7
+      responses:
+        '200':
+          description: Request fulfilled, document follows
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalSpan'
+        '400':
+          description: Bad request syntax or unsupported method
+          content:
+            application/json:
+              schema:
+                properties:
+                  status_code:
+                    type: integer
+                  detail:
+                    type: string
+                  extra:
+                    additionalProperties: {}
+                    type:
+                    - 'null'
+                    - object
+                    - array
+                type: object
+                required:
+                - detail
+                - status_code
+                description: Validation Exception
+                examples:
+                - status_code: 400
+                  detail: Bad Request
+                  extra: {}
+      deprecated: false
+  /api/v1/bdays/span/quarter:
+    get:
+      tags:
+      - Business Days
+      summary: Span Quarter
+      operationId: ApiV1BdaysSpanQuarterSpanQuarter
+      parameters:
+      - name: year
+        in: query
+        schema:
+          type: integer
+          maximum: 9999.0
+          minimum: 1.0
+          title: year
+          description: Year
+          examples:
+          - 2025
+          - 2026
+        description: Year
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        allowReserved: false
+        examples:
+          year-example-1:
+            summary: Year 2025
+            value: 2025
+          year-example-2:
+            summary: Year 2026
+            value: 2026
+      - name: quarter
+        in: query
+        schema:
+          type: integer
+          maximum: 4.0
+          minimum: 1.0
+          description: Quarter of the Year
+          examples:
+          - 1
+          - 3
+        description: Quarter of the Year
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        allowReserved: false
+        examples:
+          quarter-example-1:
+            summary: Q1
+            value: 1
+          quarter-example-2:
+            summary: Q3
+            value: 3
+      responses:
+        '200':
+          description: Request fulfilled, document follows
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalSpan'
+        '400':
+          description: Bad request syntax or unsupported method
+          content:
+            application/json:
+              schema:
+                properties:
+                  status_code:
+                    type: integer
+                  detail:
+                    type: string
+                  extra:
+                    additionalProperties: {}
+                    type:
+                    - 'null'
+                    - object
+                    - array
+                type: object
+                required:
+                - detail
+                - status_code
+                description: Validation Exception
+                examples:
+                - status_code: 400
+                  detail: Bad Request
+                  extra: {}
+      deprecated: false
+  /api/v1/bdays/span/semester:
+    get:
+      tags:
+      - Business Days
+      summary: Span Semester
+      operationId: ApiV1BdaysSpanSemesterSpanSemester
+      parameters:
+      - name: year
+        in: query
+        schema:
+          type: integer
+          maximum: 9999.0
+          minimum: 1.0
+          title: year
+          description: Year
+          examples:
+          - 2025
+          - 2026
+        description: Year
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        allowReserved: false
+        examples:
+          year-example-1:
+            summary: Year 2025
+            value: 2025
+          year-example-2:
+            summary: Year 2026
+            value: 2026
+      - name: semester
+        in: query
+        schema:
+          type: integer
+          maximum: 2.0
+          minimum: 1.0
+          description: Semester of the Year
+          examples:
+          - 1
+          - 2
+        description: Semester of the Year
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        allowReserved: false
+        examples:
+          semester-example-1:
+            summary: S1
+            value: 1
+          semester-example-2:
+            summary: S2
+            value: 2
+      responses:
+        '200':
+          description: Request fulfilled, document follows
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalSpan'
+        '400':
+          description: Bad request syntax or unsupported method
+          content:
+            application/json:
+              schema:
+                properties:
+                  status_code:
+                    type: integer
+                  detail:
+                    type: string
+                  extra:
+                    additionalProperties: {}
+                    type:
+                    - 'null'
+                    - object
+                    - array
+                type: object
+                required:
+                - detail
+                - status_code
+                description: Validation Exception
+                examples:
+                - status_code: 400
+                  detail: Bad Request
+                  extra: {}
+      deprecated: false
+  /api/v1/bdays/span/year:
+    get:
+      tags:
+      - Business Days
+      summary: Span Year
+      operationId: ApiV1BdaysSpanYearSpanYear
+      parameters:
+      - name: year
+        in: query
+        schema:
+          type: integer
+          maximum: 9999.0
+          minimum: 1.0
+          title: year
+          description: Year
+          examples:
+          - 2025
+          - 2026
+        description: Year
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        allowReserved: false
+        examples:
+          year-example-1:
+            summary: Year 2025
+            value: 2025
+          year-example-2:
+            summary: Year 2026
+            value: 2026
+      responses:
+        '200':
+          description: Request fulfilled, document follows
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalSpan'
+        '400':
+          description: Bad request syntax or unsupported method
+          content:
+            application/json:
+              schema:
+                properties:
+                  status_code:
+                    type: integer
+                  detail:
+                    type: string
+                  extra:
+                    additionalProperties: {}
+                    type:
+                    - 'null'
+                    - object
+                    - array
+                type: object
+                required:
+                - detail
+                - status_code
+                description: Validation Exception
+                examples:
+                - status_code: 400
+                  detail: Bad Request
+                  extra: {}
+      deprecated: false
+  /api/v1/holidays:
+    get:
+      tags:
+      - Holidays
+      summary: List Holidays
+      operationId: ApiV1HolidaysHolidays
+      parameters:
+      - name: description
+        in: query
+        schema:
+          oneOf:
+          - type: string
+          - type: 'null'
+          type: string
+          minLength: 2
+          title: description
+          description: 'Case insensitive textual search. Supports wildcards. NB: Accents are respected'
+          examples:
+          - null
+          - trô
+          - Trava
+          - Amaz
+        description: 'Case insensitive textual search. Supports wildcards. NB: Accents are respected'
+        required: false
+        deprecated: false
+        allowEmptyValue: false
+        allowReserved: false
+        examples:
+          description-example-1:
+            summary: 'null: Disable this filter'
+          description-example-2:
+            summary: Search `Fête du trône`
+            value: trô
+          description-example-3:
+            summary: Search `Fête du travail`
+            value: Trava
+          description-example-4:
+            summary: Search `Nouvel An Amazigh`
+            value: Amaz
+      - name: holiday_type
+        in: query
+        schema:
+          $ref: '#/components/schemas/CalHolidayType'
+        description: 'There are Three Types of holidays:
+
+          - **Religious**: Include only Religious holidays. i.e: Eid el fitr, ...
+
+          - **National**: Include only National holidays. i.e: Fête du travail, Fête du trône, ...
+
+          - **Exceptional**: Include only Exceptional holidays.
+
+          - **ND::Null**: Disable this filter'
+        required: false
+        deprecated: false
+        allowEmptyValue: false
+        allowReserved: false
+        examples:
+          holiday_type-example-1:
+            summary: 'null: Disable this filter'
+            value: ND
+      - name: day
+        in: query
+        schema:
+          oneOf:
+          - type: integer
+          - type: 'null'
+          type: integer
+          maximum: 31
+          minimum: 1
+          title: day
+          description: Filter by the Day of the Holiday
+          examples:
+          - null
+          - 1
+          - 14
+        description: Filter by the Day of the Holiday
+        required: false
+        deprecated: false
+        allowEmptyValue: false
+        allowReserved: false
+        examples:
+          day-example-1:
+            summary: 'null: Disable this filter'
+          day-example-2:
+            summary: Day = 1
+            value: 1
+          day-example-3:
+            summary: Day = 14
+            value: 14
+      - name: month
+        in: query
+        schema:
+          oneOf:
+          - type: integer
+          - type: 'null'
+          type: integer
+          maximum: 12
+          minimum: 1
+          title: month
+          description: Filter by the Month of the Holiday
+          examples:
+          - null
+          - 1
+          - 5
+        description: Filter by the Month of the Holiday
+        required: false
+        deprecated: false
+        allowEmptyValue: false
+        allowReserved: false
+        examples:
+          month-example-1:
+            summary: 'null: Disable this filter'
+          month-example-2:
+            summary: Month = 1
+            value: 1
+          month-example-3:
+            summary: Month = 5
+            value: 5
+      responses:
+        '200':
+          description: Request fulfilled, document follows
+          headers: {}
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Holiday'
+                type: array
+        '400':
+          description: Bad request syntax or unsupported method
+          content:
+            application/json:
+              schema:
+                properties:
+                  status_code:
+                    type: integer
+                  detail:
+                    type: string
+                  extra:
+                    additionalProperties: {}
+                    type:
+                    - 'null'
+                    - object
+                    - array
+                type: object
+                required:
+                - detail
+                - status_code
+                description: Validation Exception
+                examples:
+                - status_code: 400
+                  detail: Bad Request
+                  extra: {}
+      deprecated: false
+  /api/v1/holidays/{year}:
+    get:
+      tags:
+      - Holidays
+      summary: Holidays of a Year
+      operationId: ApiV1HolidaysYearHolidaysYear
+      parameters:
+      - name: year
+        in: path
+        schema:
+          type: integer
+          maximum: 9999.0
+          minimum: 1.0
+          title: year
+          description: Year
+          examples:
+          - 2025
+          - 2026
+        description: Year
+        required: true
+        deprecated: false
+        examples:
+          year-example-1:
+            summary: Year 2025
+            value: 2025
+          year-example-2:
+            summary: Year 2026
+            value: 2026
+      - name: description
+        in: query
+        schema:
+          oneOf:
+          - type: string
+          - type: 'null'
+          type: string
+          minLength: 2
+          title: description
+          description: 'Case insensitive textual search. Supports wildcards. NB: Accents are respected'
+          examples:
+          - null
+          - trô
+          - Trava
+          - Amaz
+        description: 'Case insensitive textual search. Supports wildcards. NB: Accents are respected'
+        required: false
+        deprecated: false
+        allowEmptyValue: false
+        allowReserved: false
+        examples:
+          description-example-1:
+            summary: 'null: Disable this filter'
+          description-example-2:
+            summary: Search `Fête du trône`
+            value: trô
+          description-example-3:
+            summary: Search `Fête du travail`
+            value: Trava
+          description-example-4:
+            summary: Search `Nouvel An Amazigh`
+            value: Amaz
+      - name: day
+        in: query
+        schema:
+          oneOf:
+          - type: integer
+          - type: 'null'
+          type: integer
+          maximum: 31
+          minimum: 1
+          title: day
+          description: Filter by the Day of the Holiday
+          examples:
+          - null
+          - 1
+          - 14
+        description: Filter by the Day of the Holiday
+        required: false
+        deprecated: false
+        allowEmptyValue: false
+        allowReserved: false
+        examples:
+          day-example-1:
+            summary: 'null: Disable this filter'
+          day-example-2:
+            summary: Day = 1
+            value: 1
+          day-example-3:
+            summary: Day = 14
+            value: 14
+      - name: month
+        in: query
+        schema:
+          oneOf:
+          - type: integer
+          - type: 'null'
+          type: integer
+          maximum: 12
+          minimum: 1
+          title: month
+          description: Filter by the Month of the Holiday
+          examples:
+          - null
+          - 1
+          - 5
+        description: Filter by the Month of the Holiday
+        required: false
+        deprecated: false
+        allowEmptyValue: false
+        allowReserved: false
+        examples:
+          month-example-1:
+            summary: 'null: Disable this filter'
+          month-example-2:
+            summary: Month = 1
+            value: 1
+          month-example-3:
+            summary: Month = 5
+            value: 5
+      - name: holiday_type
+        in: query
+        schema:
+          $ref: '#/components/schemas/CalHolidayType'
+        description: 'There are Three Types of holidays:
+
+          - **Religious**: Include only Religious holidays. i.e: Eid el fitr, ...
+
+          - **National**: Include only National holidays. i.e: Fête du travail, Fête du trône, ...
+
+          - **Exceptional**: Include only Exceptional holidays.
+
+          - **ND::Null**: Disable this filter'
+        required: false
+        deprecated: false
+        allowEmptyValue: false
+        allowReserved: false
+        examples:
+          holiday_type-example-1:
+            summary: 'null: Disable this filter'
+            value: ND
+      responses:
+        '200':
+          description: Request fulfilled, document follows
+          headers: {}
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Holiday'
+                type: array
+        '400':
+          description: Bad request syntax or unsupported method
+          content:
+            application/json:
+              schema:
+                properties:
+                  status_code:
+                    type: integer
+                  detail:
+                    type: string
+                  extra:
+                    additionalProperties: {}
+                    type:
+                    - 'null'
+                    - object
+                    - array
+                type: object
+                required:
+                - detail
+                - status_code
+                description: Validation Exception
+                examples:
+                - status_code: 400
+                  detail: Bad Request
+                  extra: {}
+      deprecated: false
+  /api/v1/holidays/is-holiday:
+    get:
+      tags:
+      - Holidays
+      summary: Check if a date is a Holiday
+      operationId: ApiV1HolidaysIsHolidayIsHoliday
+      parameters:
+      - name: date
+        in: query
+        schema:
+          type: string
+          format: date
+          title: date
+          description: Check if this date is a Holiday
+          examples:
+          - '2025-07-22'
+          - '2025-12-02'
+          - '2026-11-06'
+        description: Check if this date is a Holiday
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        allowReserved: false
+        examples:
+          date-example-1:
+            summary: Date 1
+            value: '2025-07-22'
+          date-example-2:
+            summary: Date 2
+            value: '2025-12-02'
+          date-example-3:
+            summary: Marche Verte
+            value: '2026-11-06'
+      responses:
+        '200':
+          description: Request fulfilled, document follows
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IsHoliday'
+        '400':
+          description: Bad request syntax or unsupported method
+          content:
+            application/json:
+              schema:
+                properties:
+                  status_code:
+                    type: integer
+                  detail:
+                    type: string
+                  extra:
+                    additionalProperties: {}
+                    type:
+                    - 'null'
+                    - object
+                    - array
+                type: object
+                required:
+                - detail
+                - status_code
+                description: Validation Exception
+                examples:
+                - status_code: 400
+                  detail: Bad Request
+                  extra: {}
+      deprecated: false
+components:
+  schemas:
+    CalFreq:
+      type: string
+      enum:
+      - ND
+      - D
+      - W
+      - M
+      - Q
+      - S
+      - Y
+      title: CalFreq
+      description: "Frequency\n\n    Enums:\n        - D: DAILY\n        - W: WEEKLY\n        - M: MONTHLY\n        - Q: QUARTERLY\n\
+        \        - S: SEMI-ANNUALLY\n        - Y: YEARLY\n    "
+    CalHolidayStatus:
+      type: string
+      enum:
+      - ND
+      - Estimated
+      - Official
+      title: CalHolidayStatus
+      description: "Represents the status of religious holidays which are based on moon sightings.\n\n    At the start of\
+        \ the year, Religious holydays are **Estimated**. When the official moon sighting is confirmed the status is changed\
+        \ to **Official**\n\n    NB: The change may **shift the `Estimated` date by ONE DAY**\n\n    All other Holiday types\
+        \ are Official by default\n\n    Attributes:\n        - ND: Not defined for the entity or unknown by us (very unlikely)\n\
+        \        - Official (str): The holiday is validated and thus Official\n        - Estimated (str): The holiday is estimated\
+        \ before the moon sighting\n    "
+    CalHolidayType:
+      type: string
+      enum:
+      - ND
+      - Religious
+      - National
+      - Exceptional
+      title: CalHolidayType
+      description: 'There are Three Types of holidays:
+
+        - **Religious**: Include only Religious holidays. i.e: Eid el fitr, ...
+
+        - **National**: Include only National holidays. i.e: Fête du travail, Fête du trône, ...
+
+        - **Exceptional**: Include only Exceptional holidays.
+
+        - **ND::Null**: Disable this filter'
+      default: ND
+      examples:
+      - ND
+    CalMode:
+      type: string
+      enum:
+      - D
+      - W
+      title: CalMode
+      description: "The Mode used by the Fin Calendar to calulate the reference dates of dynamic periods. i.e: 3:M, 23:W,\
+        \ 12:Y, ...\n\n    Enums:\n    - D: The calculation is based on open `dailies` dates. Similar to any Business days\
+        \ based calendar\n    - W: The calculation is based on the `weeklies` (**Fridays**). Returns the last weekdate related\
+        \ to the provided `period`\n    "
+    CalSpan:
+      properties:
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        year:
+          type: integer
+        semester:
+          type: integer
+        quarter:
+          type: integer
+        month:
+          type: integer
+        mode_calendar:
+          $ref: '#/components/schemas/CalMode'
+        country_code:
+          type: string
+      type: object
+      required:
+      - country_code
+      - end_date
+      - mode_calendar
+      - month
+      - quarter
+      - semester
+      - start_date
+      - year
+      title: CalSpan
+    DaysCount:
+      properties:
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        count:
+          type: integer
+        freq:
+          $ref: '#/components/schemas/CalFreq'
+      type: object
+      required:
+      - count
+      - end_date
+      - freq
+      - start_date
+      title: DaysCount
+    Holiday:
+      properties:
+        description:
+          type: string
+        day:
+          type: integer
+        month:
+          type: integer
+        date:
+          type: 'null'
+        holiday_type:
+          $ref: '#/components/schemas/CalHolidayType'
+        country_code:
+          type: string
+          default: MA
+        status:
+          $ref: '#/components/schemas/CalHolidayStatus'
+      type: object
+      required:
+      - description
+      title: Holiday
+    IsHoliday:
+      properties:
+        date:
+          type: string
+          format: date
+        is_holiday:
+          type: boolean
+        description:
+          type: string
+        holiday_type:
+          $ref: '#/components/schemas/CalHolidayType'
+        status:
+          $ref: '#/components/schemas/CalHolidayStatus'
+        country_code:
+          type: string
+      type: object
+      required:
+      - country_code
+      - date
+      - description
+      - holiday_type
+      - is_holiday
+      - status
+      title: IsHoliday
+    NextDate:
+      properties:
+        date:
+          type: string
+          format: date
+        next_date:
+          type: string
+          format: date
+      type: object
+      required:
+      - date
+      - next_date
+      title: NextDate
+    PreviousDate:
+      properties:
+        date:
+          type: string
+          format: date
+        previous_date:
+          type: string
+          format: date
+      type: object
+      required:
+      - date
+      - previous_date
+      title: PreviousDate
+    SerieDatesEng:
+      properties:
+        ref:
+          type: string
+        min_date:
+          type: string
+          format: date
+        max_date:
+          type: string
+          format: date
+        freq:
+          $ref: '#/components/schemas/CalFreq'
+        nitems:
+          type: integer
+        serie:
+          items:
+            type: string
+            format: date
+          type: array
+      type: object
+      required:
+      - ref
+      title: SerieDatesEng
+    SystemHealth:
+      properties:
+        api_status:
+          type: boolean
+        appname:
+          type: string
+          default: calendar-api
+      type: object
+      required: []
+      title: SystemHealth
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      description: API Key authentication and authorization.
+      name: X-API-KEY
+      in: header
+    sessionCookie:
+      type: apiKey
+      description: Session cookie authentication.
+      name: session
+      in: cookie
+security:
+- apiKey: []
+- sessionCookie: []
+tags:
+- name: Holidays
+  description: National holidays of any year and Religious holidays of past years
+  x-tag-expanded: false
+- name: Business Days
+  description: National Open business days
+  x-tag-expanded: false
+- name: Misc
+  description: Misc endpoints
+  x-tag-expanded: false
+externalDocs:
+  url: https://docs.calendar-api.ma
+  description: Documentation externe de l'API

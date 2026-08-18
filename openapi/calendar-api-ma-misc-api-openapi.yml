@@ -1,0 +1,169 @@
+openapi: 3.2.0
+info:
+  title: Calendar Misc API
+  version: v1
+  summary: Calendar API for Moroccan Holidays and Open Business Days
+  description: '
+
+    ## Try Calendar API
+
+
+    This interactive panel allows you to explore the whole API and to understand the different datastructures and parameters
+
+    used by every endpoint. You can also test every **active** APIKey you have.
+
+
+    ## Setup your APIKey
+
+
+    Copy any **active** APIKey from your console and set it in the `Authentication` side panel.
+
+
+    That''s it :-), now you can explore any endpoint
+
+
+    ## Holidays
+
+
+    This API allows to list, search and check if a `date` is a Moroccan holiday.
+
+
+    | Endpoint                 |                                                                                                                        Description |
+
+    | ------------------------ | :--------------------------------------------------------------------------------------------------------------------------------- |
+
+    | **/holidays/is-holiday** |                                                                                          Checks if a date is an `Official` Holiday |
+
+    | **/holidays/{year}**     |                                                                                                     List the holidays of the year. |
+
+    | **/holidays**            |  Lists all national Holidays. Since Morocco is a Kingdom, there are some Holidays that depend on the birthday of the current King. |
+
+
+    **N.B:**
+
+    Please note that if it''s a **future** `year`, the **religious holidays** are `Estimated` and not official because they depend on the moon sighting.
+
+
+    Once confirmed, the Holiday becomes `Official` and the adequate flag will be updated accordingly.
+
+
+    ## Business Days (bdays)
+
+
+    This API calculates the `next` and `previous` **Open Business Day** of a date. You can also get the Open Days for a whole year or any month of a year
+
+
+    | Endpoint                  | Description                                                                                     |
+
+    | ------------------------- | ----------------------------------------------------------------------------------------------- |
+
+    | **/bdays/{year}**         | Generate the Business days for the whole `year`                                                 |
+
+    | **/bdays/{year}/{month}** | Generate the Business days of a `month` of the `year`                                           |
+
+    | **/bdays/next**           | Calculate **the next** Open day relative to the provided `date`                                 |
+
+    | **/bdays/previous**       | Calculate **the previous** Open day relative to the provided `date`                             |
+
+    | **/bdays/count**          | Count the business days between 2 dates (included)                                              |
+
+    | **/bdays/between**        | List the business days between 2 dates (included)                                               |
+
+    | **/bdays/span/month**     | Calculate the interval (Start/End date) of a `month`. i.e: Interval of the month 5 of year 2025 |
+
+    | **/bdays/span/quarter**   | Calculate the interval (Start/End date) of a `quarter`. i.e: Interval of the Q2 of year 2024    |
+
+    | **/bdays/span/semester**  | Calculate the interval (Start/End date) of a `semester`. i.e: Interval of the S1 of year 2026   |
+
+    | **/bdays/span/year**      | Calculate the interval (Start/End date) of the `year`. i.e: Interval of the year 2021           |
+
+
+
+    ## Data dictionary
+
+
+    ### Holiday Type:
+
+
+    | Value           |                                                                  Description |
+
+    | --------------- | :--------------------------------------------------------------------------- |
+
+    | **National**    |                                               The date is a national Holiday |
+
+    | **Religious**   |  The date is a Religious Holiday (Check the status if it''s Confirmed or not) |
+
+    | **Exceptional** |                                           The date is an exceptional Holiday |
+
+
+    ### HolidayStatus (status)
+
+
+    | Value         |                                                Description |
+
+    | ------------- | :--------------------------------------------------------- |
+
+    | **Official**  |                                    The Holiday is Official |
+
+    | **Estimated** |  Religious Holidays are estimated before the moon sighting |
+
+
+    '
+  contact:
+    name: UNRAVEL DESIGNS
+    url: https://unraveldesigns.ma
+    email: ud@unraveldesigns.ma
+  license:
+    name: Proprietary
+servers:
+- url: https://calendar-api.ma
+  description: Casablanca (production) — resolved from the relative server "/" published in the original spec at https://calendar-api.ma/schema/openapi.json
+security:
+- apiKey: []
+- sessionCookie: []
+tags:
+- name: Misc
+  description: Misc endpoints
+  x-tag-expanded: false
+paths:
+  /health:
+    get:
+      tags:
+      - Misc
+      summary: API Health
+      operationId: HealthHealth
+      responses:
+        '200':
+          description: Request fulfilled, document follows
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemHealth'
+      deprecated: false
+components:
+  schemas:
+    SystemHealth:
+      properties:
+        api_status:
+          type: boolean
+        appname:
+          type: string
+          default: calendar-api
+      type: object
+      required: []
+      title: SystemHealth
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      description: API Key authentication and authorization.
+      name: X-API-KEY
+      in: header
+    sessionCookie:
+      type: apiKey
+      description: Session cookie authentication.
+      name: session
+      in: cookie
+externalDocs:
+  url: https://docs.calendar-api.ma
+  description: Documentation externe de l'API

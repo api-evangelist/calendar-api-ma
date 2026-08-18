@@ -1,0 +1,37 @@
+generated: '2026-08-18'
+method: generated
+source: >-
+  openapi/calendar-api-ma-calendar-api-openapi.yml +
+  https://calendar-api.ma/holidays-api.html + https://calendar-api.ma/bdays-api.html +
+  https://docs.calendar-api.ma/how-it-works/
+note: >-
+  Three packaged Agent Skills covering the API's marquee flows. Every operationId quoted was verified
+  against the provider's published OpenAPI 3.1 document; none is invented. The provider publishes no skills,
+  AGENTS.md or llms.txt of its own — the GitLab repository tree was checked and contains none.
+skills:
+  - name: check-moroccan-holiday
+    file: calendar-api-ma-check-moroccan-holiday.md
+    description: Decide whether a date is a Moroccan holiday and handle the Estimated/Official distinction correctly.
+    operations: [ApiV1HolidaysIsHolidayIsHoliday, ApiV1HolidaysYearHolidaysYear, ApiV1HolidaysHolidays]
+  - name: schedule-on-business-days
+    file: calendar-api-ma-schedule-on-business-days.md
+    description: Roll dates to the next/previous open business day and count or list working days over a range.
+    operations:
+      - ApiV1BdaysNextBdaysNext
+      - ApiV1BdaysPreviousBdaysPrevious
+      - ApiV1BdaysCountCountBdays
+      - ApiV1BdaysBetweenDatesBetween
+      - ApiV1BdaysYearBdaysYear
+      - ApiV1BdaysYearMonthBdaysMonth
+  - name: build-reporting-periods
+    file: calendar-api-ma-build-reporting-periods.md
+    description: Produce chainable, gap-free business-day CalSpan bounds for a month, quarter, semester or year.
+    operations:
+      - ApiV1BdaysSpanMonthSpanMonth
+      - ApiV1BdaysSpanQuarterSpanQuarter
+      - ApiV1BdaysSpanSemesterSpanSemester
+      - ApiV1BdaysSpanYearSpanYear
+skill_count: 3
+operations_covered: 13
+operations_total: 14
+uncovered: [HealthHealth]

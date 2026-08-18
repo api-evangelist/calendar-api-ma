@@ -1,0 +1,114 @@
+generated: '2026-08-18'
+method: derived
+source: openapi/calendar-api-ma-calendar-api-openapi.yml
+status: candidate
+note: >-
+  Calendar API publishes NO MCP server. Searched the provider site, the docs host, the GitLab group
+  (ud-labs has exactly one public project, py-calendar-api, and its tree contains no MCP module),
+  PyPI and npm; probed https://calendar-api.ma/mcp (404) and every /.well-known/ path (all 404).
+  The tools below are a CANDIDATE mapping derived from the 14 published OpenAPI operations — nobody
+  ships this server, no endpoint exists, and none may be inferred. The API is an unusually clean MCP
+  candidate: every operation is a read-only GET with scalar parameters and a typed response.
+  NO MCPServer POINTER IS EMITTED IN apis.yml, deliberately: deployment.mode is none, and that pointer
+  would assert the provider serves an agent surface it does not serve. Same rule as the well-known probe
+  and the agent card — this file records an absence plus a design, not a presence.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: api-key
+  verified: derived
+server: null
+transport: null
+auth:
+  type: apiKey
+  header: X-API-KEY
+  note: The REST API authenticates with an X-API-KEY request header; keys are self-issued from the console at https://calendar-api.ma/console/ (up to 5 keys per account).
+tools:
+  - name: check_is_holiday
+    description: Check whether a given date is an official Moroccan holiday, and return its type and confirmation status.
+    rest: ApiV1HolidaysIsHolidayIsHoliday
+    method: GET
+    path: /api/v1/holidays/is-holiday
+    read_only: true
+  - name: list_holidays
+    description: List all Moroccan national, religious and exceptional holidays, filterable by description, type, day and month.
+    rest: ApiV1HolidaysHolidays
+    method: GET
+    path: /api/v1/holidays
+    read_only: true
+  - name: list_holidays_for_year
+    description: List the holidays of a given year, with Estimated/Official status per religious holiday.
+    rest: ApiV1HolidaysYearHolidaysYear
+    method: GET
+    path: /api/v1/holidays/{year}
+    read_only: true
+  - name: next_business_day
+    description: Return the next open business day relative to a date.
+    rest: ApiV1BdaysNextBdaysNext
+    method: GET
+    path: /api/v1/bdays/next
+    read_only: true
+  - name: previous_business_day
+    description: Return the previous open business day relative to a date.
+    rest: ApiV1BdaysPreviousBdaysPrevious
+    method: GET
+    path: /api/v1/bdays/previous
+    read_only: true
+  - name: count_business_days
+    description: Count the open business days between two dates, inclusive.
+    rest: ApiV1BdaysCountCountBdays
+    method: GET
+    path: /api/v1/bdays/count
+    read_only: true
+  - name: list_business_days_between
+    description: List the open business days between two dates, inclusive.
+    rest: ApiV1BdaysBetweenDatesBetween
+    method: GET
+    path: /api/v1/bdays/between
+    read_only: true
+  - name: list_business_days_for_year
+    description: List the open business days of a whole year.
+    rest: ApiV1BdaysYearBdaysYear
+    method: GET
+    path: /api/v1/bdays/{year}
+    read_only: true
+  - name: list_business_days_for_month
+    description: List the open business days of a month of a year.
+    rest: ApiV1BdaysYearMonthBdaysMonth
+    method: GET
+    path: /api/v1/bdays/{year}/{month}
+    read_only: true
+  - name: span_month
+    description: Return the business-day start/end bounds of a month (CalSpan).
+    rest: ApiV1BdaysSpanMonthSpanMonth
+    method: GET
+    path: /api/v1/bdays/span/month
+    read_only: true
+  - name: span_quarter
+    description: Return the business-day start/end bounds of a quarter (CalSpan).
+    rest: ApiV1BdaysSpanQuarterSpanQuarter
+    method: GET
+    path: /api/v1/bdays/span/quarter
+    read_only: true
+  - name: span_semester
+    description: Return the business-day start/end bounds of a semester (CalSpan).
+    rest: ApiV1BdaysSpanSemesterSpanSemester
+    method: GET
+    path: /api/v1/bdays/span/semester
+    read_only: true
+  - name: span_year
+    description: Return the business-day start/end bounds of a year (CalSpan).
+    rest: ApiV1BdaysSpanYearSpanYear
+    method: GET
+    path: /api/v1/bdays/span/year
+    read_only: true
+  - name: health
+    description: Report API availability.
+    rest: HealthHealth
+    method: GET
+    path: /health
+    read_only: true
+    auth_required: false
+tool_count: 14

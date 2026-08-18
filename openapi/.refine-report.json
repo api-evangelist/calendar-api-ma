@@ -1,0 +1,21 @@
+{
+  "provider": "calendar-api-ma",
+  "sources": [
+    "calendar-api-ma-calendar-api-openapi.yml"
+  ],
+  "outputs": [
+    "calendar-api-ma-business-days-api-openapi.yml",
+    "calendar-api-ma-holidays-api-openapi.yml",
+    "calendar-api-ma-misc-api-openapi.yml"
+  ],
+  "archived": [
+    "archived openapi/calendar-api-ma-calendar-api-openapi.yml"
+  ],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "calendar-api-ma-calendar-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: written (+3 apis, 3 total)"
+  ],
+  "skipped": []
+}

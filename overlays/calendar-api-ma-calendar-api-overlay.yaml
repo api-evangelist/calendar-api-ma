@@ -1,0 +1,79 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Calendar API
+  version: 1.0.0
+x-provenance:
+  generated: '2026-08-18'
+  method: generated
+  source: openapi/calendar-api-ma-calendar-api-openapi.yml
+  extends: openapi/_original/calendar-api-ma-calendar-api-openapi.json
+  note: >-
+    Captures API Evangelist's additions on top of the provider's published OpenAPI 3.1 document. The
+    original is never mutated. The single substantive repair is servers[]: the provider publishes the
+    relative server "/" (valid, but unresolvable outside a browser sitting on calendar-api.ma), so the
+    absolute production host is supplied here. Everything else is metadata the provider omitted:
+    contact/licence/terms links, the documented 401 response observed live, and external links to the
+    SDK, Postman documentation and guides.
+actions:
+  - target: $
+    description: Supply the absolute production server, resolving the provider's relative "/" server.
+    update:
+      servers:
+        - url: https://calendar-api.ma
+          description: >-
+            Casablanca (production). Resolved from the relative server "/" published in the original spec
+            at https://calendar-api.ma/schema/openapi.json.
+  - target: $.info
+    description: Add contact and licence metadata absent from the published spec.
+    update:
+      contact:
+        name: Unravel Designs — Calendar API support
+        email: support@calendar-api.ma
+        url: https://calendar-api.ma/contacts.html
+      x-provider: Unravel Designs (RC 605945), Casablanca, Morocco
+      x-privacy-policy: https://calendar-api.ma/privacy.html
+  - target: $.externalDocs
+    description: Point external docs at the human guides in addition to the SDK documentation site.
+    update:
+      url: https://docs.calendar-api.ma
+      description: >-
+        Python SDK documentation. Product guides: https://calendar-api.ma/holidays-api.html (holidays) and
+        https://calendar-api.ma/bdays-api.html (business days). Postman documentation:
+        https://documenter.getpostman.com/view/9897118/2sBYArSrTN
+  - target: $.paths[*][*].responses
+    description: >-
+      Document the 401 the API returns live when the X-API-KEY header is absent. Observed on
+      GET /api/v1/holidays/is-holiday on 2026-08-18; the published spec declares only 200 and 400.
+    update:
+      '401':
+        description: Missing or invalid API key.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - status_code
+                - detail
+              properties:
+                status_code:
+                  type: integer
+                detail:
+                  type: string
+                extra:
+                  type:
+                    - 'null'
+                    - object
+                    - array
+            examples:
+              missing-key:
+                summary: No X-API-KEY header supplied
+                value:
+                  status_code: 401
+                  detail: 'Auth Header = `X-API-KEY` not found in request header'
+  - target: $.components.securitySchemes.apiKey
+    description: Record where an API key is obtained and the per-account key allowance.
+    update:
+      x-key-management-url: https://calendar-api.ma/console/
+      x-signup-url: https://calendar-api.ma/console/register
+      x-keys-per-account: 5
+      x-signup-terms: Free self-serve registration; no payment card required.

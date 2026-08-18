@@ -1,50 +1,150 @@
+aid: calendar-api-ma
 name: API Calendrier Marocain | Jours Fériés & Ouvrables REST + SDK Python
-description: >-
-  REST API returning Moroccan public holidays (national, religious, exceptional) and business/open-day calculations,
-  with a typed Python SDK. Aimed at data engineers for ETL/orchestration pipelines (Airflow, Dagster).
-url: https://api-calendrier-marocain-jours-f-ri-s-ouvrables-rest-sdk-python.apievangelist.com/apis.yml
+description: 'Calendar API is a REST service from Unravel Designs (Casablanca, Morocco) that turns the
+  Moroccan economic calendar into a callable contract. It returns national, religious and exceptional
+  public holidays with an explicit Estimated/Official status — religious feasts are dated astronomically
+  and only become Official after moon sighting — and it calculates open business days: next and previous
+  working day, counts and listings between two dates, and CalSpan, a chainable business-day [start_date,
+  end_date] interval for a month, quarter, semester or year that drops straight into a SQL BETWEEN. Fourteen
+  read-only GET operations are described by a published OpenAPI 3.1 document, authenticated with an X-API-KEY
+  header, and wrapped by a typed first-party Python SDK (pycalendar-api). It is aimed at data engineers
+  wiring Moroccan holiday logic into ETL pipelines and orchestrators such as Airflow and Dagster, and
+  at regulated-market reporting where a hardcoded holiday table quietly goes stale every year.'
+url: https://calendar-api-ma.apievangelist.com/apis.yml
+image: https://calendar-api.ma/assets/img/logos/cal-api-logo%20small.webp
 created: '2026-08-18'
 modified: '2026-08-18'
 specificationVersion: '0.21'
 tags:
-  - holidays
-  - morocco
-  - calendar
-  - business-days
-  - date-utilities
-  - data-engineering
-  - ETL
-  - python-sdk
-  - localization
+- holidays
+- morocco
+- calendar
+- business-days
+- date-utilities
+- data-engineering
+- ETL
+- python-sdk
+- localization
+- reference-data
+- public-holidays
+- scheduling
 apis:
-  - name: Calendar API (calendrier marocain)
-    description: >-
-      REST API for Moroccan public holidays and business day calculations, JSON over HTTPS with API-key auth, backed by
-      an OpenAPI 3.1 contract and an official Python SDK.
-    humanURL: https://docs.calendar-api.ma
-    baseURL: https://calendar-api.ma
-    tags:
-      - holidays
-      - morocco
-      - calendar
-      - business-days
-      - date-utilities
-      - data-engineering
-      - ETL
-      - python-sdk
-      - localization
-    properties:
-      - type: OpenAPI
-        url: https://calendar-api.ma/apis.json
-      - type: Documentation
-        url: https://docs.calendar-api.ma
-      - type: Documentation
-        url: https://calendar-api.ma/api/v1/docs
+- aid: calendar-api-ma:calendar-api-ma-business-days-api
+  name: API Calendrier Marocain | Jours Fériés & Ouvrables REST + SDK Python Business Days API
+  description: National Open business days
+  humanURL: https://docs.calendar-api.ma
+  baseURL: https://calendar-api.ma
+  tags:
+  - Business Days
+  properties:
+  - type: OpenAPI
+    url: openapi/calendar-api-ma-business-days-api-openapi.yml
+  - type: Documentation
+    url: https://docs.calendar-api.ma
+  - type: APIReference
+    url: https://calendar-api.ma/api/v1/docs
+  - type: Postman
+    url: https://documenter.getpostman.com/view/9897118/2sBYArSrTN
+- aid: calendar-api-ma:calendar-api-ma-holidays-api
+  name: API Calendrier Marocain | Jours Fériés & Ouvrables REST + SDK Python Holidays API
+  description: National holidays of any year and Religious holidays of past years
+  humanURL: https://docs.calendar-api.ma
+  baseURL: https://calendar-api.ma
+  tags:
+  - Holidays
+  properties:
+  - type: OpenAPI
+    url: openapi/calendar-api-ma-holidays-api-openapi.yml
+  - type: Documentation
+    url: https://docs.calendar-api.ma
+  - type: APIReference
+    url: https://calendar-api.ma/api/v1/docs
+  - type: Postman
+    url: https://documenter.getpostman.com/view/9897118/2sBYArSrTN
+- aid: calendar-api-ma:calendar-api-ma-misc-api
+  name: API Calendrier Marocain | Jours Fériés & Ouvrables REST + SDK Python Misc API
+  description: Misc endpoints
+  humanURL: https://docs.calendar-api.ma
+  baseURL: https://calendar-api.ma
+  tags:
+  - Misc
+  properties:
+  - type: OpenAPI
+    url: openapi/calendar-api-ma-misc-api-openapi.yml
+  - type: Documentation
+    url: https://docs.calendar-api.ma
+  - type: APIReference
+    url: https://calendar-api.ma/api/v1/docs
+  - type: Postman
+    url: https://documenter.getpostman.com/view/9897118/2sBYArSrTN
 maintainers:
-  - FN: Marouane Fakir
-    url: https://unraveldesigns.ma
+- FN: Marouane Fakir
+  email: mfakir@unraveldesigns.ma
+  url: https://unraveldesigns.ma
+common:
+- type: Overlay
+  url: overlays/calendar-api-ma-calendar-api-overlay.yaml
+- type: DeveloperPortal
+  url: https://calendar-api.ma
+- type: Documentation
+  url: https://docs.calendar-api.ma
+- type: APIReference
+  url: https://calendar-api.ma/api/v1/docs
+- type: GettingStarted
+  url: https://calendar-api.ma/holidays-api.html
+- type: Support
+  url: https://calendar-api.ma/contacts.html
+- type: SignUp
+  url: https://calendar-api.ma/console/register
+- type: Login
+  url: https://calendar-api.ma/console/login
+- type: PrivacyPolicy
+  url: https://calendar-api.ma/privacy.html
+- type: SourceCode
+  url: https://gitlab.com/ud-labs/py-calendar-api
+- type: Postman
+  url: https://documenter.getpostman.com/view/9897118/2sBYArSrTN
+- type: Packages
+  url: packages/calendar-api-ma-packages.yml
+- type: SDKs
+  url: packages/calendar-api-ma-packages.yml
+- type: Python SDK
+  url: https://pypi.org/project/pycalendar-api/
+- type: Authentication
+  url: authentication/calendar-api-ma-authentication.yml
+- type: Conventions
+  url: conventions/calendar-api-ma-conventions.yml
+- type: ErrorCatalog
+  url: errors/calendar-api-ma-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/calendar-api-ma-lifecycle.yml
+- type: ChangeLog
+  url: changelog/calendar-api-ma-changelog.yml
+- type: Conformance
+  url: conformance/calendar-api-ma-conformance.yml
+- type: DataModel
+  url: data-model/calendar-api-ma-data-model.yml
+- type: Examples
+  url: examples/calendar-api-ma-examples.yml
+- type: RateLimits
+  url: rate-limits/calendar-api-ma-rate-limits.yml
+- type: Plans
+  url: plans/calendar-api-ma-plans-pricing.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/calendar-api-ma-llms.txt
+- type: DomainSecurity
+  url: security/calendar-api-ma-domain-security.yml
 generated:
   by: apis.io/add
   model: claude-opus-4-8
   confidence: 95
   at: '2026-08-18T14:51:33.599Z'
+x-enrichment:
+  date: '2026-08-18'
+  status: enriched
+  artifacts_added: 22
+  pass: local-v1
+x-coverage:
+  state: covered

@@ -1,0 +1,20 @@
+generated: '2026-08-18'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: docs.calendar-api.ma
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 28 18:32:38 2026 GMT
+  hsts: false
+- host: calendar-api.ma
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 29 06:24:17 2026 GMT
+  hsts: null
+domains:
+- domain: calendar-api.ma
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: false

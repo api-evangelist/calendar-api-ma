@@ -1,0 +1,126 @@
+generated: '2026-08-18'
+method: derived
+source: >-
+  openapi/calendar-api-ma-calendar-api-openapi.yml
+  (components.schemas + $ref graph) enriched from https://docs.calendar-api.ma/how-it-works/ and
+  https://docs.calendar-api.ma/reference-docs/models/
+note: >-
+  A flat reference-data model, not a transactional one. There are no resource identifiers, no foreign keys
+  and no create/update semantics — every schema is a read-only projection keyed by date. The only
+  relationships in the graph are enum composition ($ref from an object field to a string enum) and the
+  series envelope wrapping a date array. Entities are addressed by date/year/month, never by an id, so
+  there is nothing to store, cache-invalidate or reconcile by key.
+identifiers:
+  scheme: none
+  note: >-
+    No entity carries an id or a prefixed identifier. SerieDatesEng carries `ref`, a human-readable series
+    label (for example "bdays-2025-06"), which is descriptive rather than a stable resource identifier.
+  addressing: 'By date, year, or year+month path/query parameters.'
+entities:
+  - name: Holiday
+    description: A Moroccan public holiday record.
+    returned_by: [ApiV1HolidaysHolidays, ApiV1HolidaysYearHolidaysYear]
+    fields:
+      - {name: description, type: string, required: true}
+      - {name: day, type: integer}
+      - {name: month, type: integer}
+      - {name: date, type: 'null'}
+      - {name: holiday_type, type: CalHolidayType}
+      - {name: country_code, type: string}
+      - {name: status, type: CalHolidayStatus}
+    note: >-
+      Only `description` is required; day/month/date are optional because a religious holiday has no fixed
+      Gregorian date until it is confirmed. History follows SCD Type 2, so a holiday is simply absent for
+      years in which it was not defined.
+  - name: IsHoliday
+    description: The answer to "is this date a holiday", with the reason.
+    returned_by: [ApiV1HolidaysIsHolidayIsHoliday]
+    fields:
+      - {name: date, type: string, required: true}
+      - {name: is_holiday, type: boolean, required: true}
+      - {name: description, type: string, required: true}
+      - {name: holiday_type, type: CalHolidayType, required: true}
+      - {name: status, type: CalHolidayStatus, required: true}
+      - {name: country_code, type: string, required: true}
+  - name: NextDate
+    description: A date and the next open business day after it.
+    returned_by: [ApiV1BdaysNextBdaysNext]
+    fields:
+      - {name: date, type: string, required: true}
+      - {name: next_date, type: string, required: true}
+  - name: PreviousDate
+    description: A date and the previous open business day before it.
+    returned_by: [ApiV1BdaysPreviousBdaysPrevious]
+    fields:
+      - {name: date, type: string, required: true}
+      - {name: previous_date, type: string, required: true}
+  - name: DaysCount
+    description: The count of open business days between two dates, inclusive.
+    returned_by: [ApiV1BdaysCountCountBdays]
+    fields:
+      - {name: start_date, type: string, required: true}
+      - {name: end_date, type: string, required: true}
+      - {name: count, type: integer, required: true}
+      - {name: freq, type: CalFreq, required: true}
+  - name: SerieDatesEng
+    description: A labelled series of dates with its bounds and cardinality.
+    returned_by: [ApiV1BdaysYearBdaysYear, ApiV1BdaysYearMonthBdaysMonth, ApiV1BdaysBetweenDatesBetween]
+    fields:
+      - {name: ref, type: string, required: true}
+      - {name: min_date, type: string}
+      - {name: max_date, type: string}
+      - {name: freq, type: CalFreq}
+      - {name: nitems, type: integer}
+      - {name: serie, type: array of date}
+  - name: CalSpan
+    description: The business-day start/end bounds of a calendar period — the chainable interval primitive.
+    returned_by:
+      - ApiV1BdaysSpanMonthSpanMonth
+      - ApiV1BdaysSpanQuarterSpanQuarter
+      - ApiV1BdaysSpanSemesterSpanSemester
+      - ApiV1BdaysSpanYearSpanYear
+    fields:
+      - {name: start_date, type: string, required: true}
+      - {name: end_date, type: string, required: true}
+      - {name: year, type: integer, required: true}
+      - {name: semester, type: integer, required: true}
+      - {name: quarter, type: integer, required: true}
+      - {name: month, type: integer, required: true}
+      - {name: mode_calendar, type: CalMode, required: true}
+      - {name: country_code, type: string, required: true}
+    note: >-
+      Spans are designed to chain without gap or overlap so consecutive [start_date, end_date] pairs can be
+      used directly in a SQL BETWEEN clause. The design came from OPCVM (Moroccan mutual fund) reporting.
+  - name: SystemHealth
+    description: API liveness.
+    returned_by: [HealthHealth]
+    fields:
+      - {name: api_status, type: boolean}
+      - {name: appname, type: string}
+    note: >-
+      The spec types api_status as boolean, but the live endpoint returns the string "UP"
+      ({"api_status":"UP","appname":"calendar-api"}, observed 2026-08-18). A contract/behaviour mismatch
+      worth reporting to the provider.
+enums:
+  - name: CalHolidayType
+    values: [ND, Religious, National, Exceptional]
+    note: ND disables the filter.
+  - name: CalHolidayStatus
+    values: [ND, Estimated, Official]
+    note: Only religious holidays are ever Estimated; status flips to Official after moon sighting.
+  - name: CalFreq
+    values: [ND, D, W, M, Q, S, Y]
+    note: Daily, Weekly, Monthly, Quarterly, Semestrial, Yearly.
+  - name: CalMode
+    values: [D, W]
+relationships:
+  - {from: Holiday, to: CalHolidayType, type: has_one, via: holiday_type}
+  - {from: Holiday, to: CalHolidayStatus, type: has_one, via: status}
+  - {from: IsHoliday, to: CalHolidayType, type: has_one, via: holiday_type}
+  - {from: IsHoliday, to: CalHolidayStatus, type: has_one, via: status}
+  - {from: DaysCount, to: CalFreq, type: has_one, via: freq}
+  - {from: SerieDatesEng, to: CalFreq, type: has_one, via: freq}
+  - {from: CalSpan, to: CalMode, type: has_one, via: mode_calendar}
+entity_count: 8
+enum_count: 4
+relationship_count: 7

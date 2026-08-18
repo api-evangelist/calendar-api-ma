@@ -1,0 +1,85 @@
+generated: '2026-08-18'
+method: derived
+source: >-
+  openapi/calendar-api-ma-calendar-api-openapi.yml +
+  live probes of https://calendar-api.ma/.well-known/* (all 404) + https://calendar-api.ma/privacy.html +
+  https://calendar-api.ma/contacts.html
+note: >-
+  Cross-cutting standards assertions. Calendar API conforms to OpenAPI 3.1 and little else — which is a
+  reasonable posture for a single-developer read-only reference API, but it should be recorded rather than
+  assumed. No compliance certification (SOC 2, ISO 27001, PCI, HIPAA) is claimed anywhere on the provider's
+  surface, so NO Compliance pointer is emitted in apis.yml.
+standards:
+  - id: openapi
+    conforms: true
+    version: 3.1.0
+    evidence: >-
+      Machine-readable OpenAPI 3.1.0 served at https://calendar-api.ma/schema/openapi.json with
+      content-type application/vnd.oai.openapi+json (HTTP 200), and mirrored at
+      https://calendar-api.ma/apis.json. 14 operations, all with operationId, summary, tags and typed
+      responses; 12 reusable components.schemas; securitySchemes defined and applied at the root.
+  - id: json-schema
+    conforms: true
+    evidence: OpenAPI 3.1 schemas are JSON Schema 2020-12 by construction; enums, oneOf and nullable unions are used throughout.
+  - id: rfc9457
+    conforms: false
+    evidence: >-
+      Errors are application/json with a flat {status_code, detail, extra} envelope, not
+      application/problem+json. See errors/calendar-api-ma-problem-types.yml
+  - id: oauth2
+    conforms: false
+    evidence: No oauth2 securityScheme in the spec; /.well-known/oauth-authorization-server returns 404. Auth is an X-API-KEY header.
+  - id: oidc
+    conforms: false
+    evidence: No openIdConnect securityScheme; /.well-known/openid-configuration returns 404.
+  - id: api-keys
+    conforms: true
+    evidence: 'components.securitySchemes.apiKey — type apiKey, in header, name X-API-KEY; applied globally via root security.'
+  - id: pagination
+    conforms: false
+    evidence: No page, offset, cursor or limit parameter exists on any operation; collections return in full.
+  - id: idempotency
+    conforms: false
+    not_applicable: true
+    evidence: All 14 operations are safe GETs with no request body; no Idempotency-Key mechanism is published because there is nothing to make idempotent.
+  - id: rfc9116-security-txt
+    conforms: false
+    evidence: https://calendar-api.ma/.well-known/security.txt returns 404.
+  - id: rfc8594-sunset
+    conforms: false
+    evidence: No Sunset or Deprecation header policy is published; no operation is marked deprecated.
+  - id: rfc9111-http-caching
+    conforms: false
+    evidence: No Cache-Control, ETag or Last-Modified header was observed on live responses — notable for a reference dataset that changes a handful of times a year.
+  - id: asyncapi
+    conforms: false
+    not_applicable: true
+    evidence: No event, webhook or streaming surface exists; the provider documents polling as the change-notification pattern.
+  - id: mcp
+    conforms: false
+    evidence: No MCP server is published; https://calendar-api.ma/mcp returns 404.
+  - id: a2a
+    conforms: false
+    evidence: /.well-known/agent-card.json and /.well-known/agent.json return 404 on both hosts.
+  - id: graphql
+    conforms: false
+    not_applicable: true
+    evidence: No GraphQL surface is published or advertised.
+  - id: tls
+    conforms: true
+    evidence: 'TLSv1.3 on calendar-api.ma and docs.calendar-api.ma; HTTPS enforced. See security/calendar-api-ma-domain-security.yml'
+  - id: iso-3166
+    conforms: true
+    evidence: Responses carry a country_code field; the dataset is Morocco-only.
+  - id: iso-8601
+    conforms: true
+    evidence: Date fields are typed as strings in date form across CalSpan, SerieDatesEng, NextDate, PreviousDate and DaysCount.
+certifications:
+  published: false
+  note: >-
+    No SOC 2, ISO 27001, PCI DSS, HIPAA or FedRAMP claim appears on the site. No trust centre exists. The
+    privacy policy at https://calendar-api.ma/privacy.html is the only published governance document. The
+    operator is Unravel Designs, RC 605945, Casablanca, Morocco — a Moroccan registered company, so Morocco's
+    law 09-08 / CNDP regime would be the applicable data-protection frame, but the provider makes no explicit
+    CNDP or GDPR conformance claim that could be recorded here.
+conforms_count: 7

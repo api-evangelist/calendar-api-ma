@@ -1,0 +1,79 @@
+generated: '2026-08-18'
+method: probed
+source: live GET of /.well-known/* on every apis.yml + OpenAPI servers[] host
+note: >-
+  Nothing is served. Every /.well-known/ path on both hosts returned 404 — calendar-api.ma answers with the
+  site's styled 404 page (7803 bytes) and docs.calendar-api.ma with the GitLab Pages 404 (19649 bytes).
+  No file was saved and NO WellKnown or SecurityTxt pointer is emitted in apis.yml, because this artifact
+  records an absence, not a presence. The API uses X-API-KEY header auth with no OAuth/OIDC layer, so the
+  oauth-authorization-server and openid-configuration misses are expected rather than a gap.
+hosts:
+  - host: calendar-api.ma
+    probes:
+      - path: /.well-known/security.txt
+        status: 404
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 404
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+        file: null
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+        file: null
+      - path: /.well-known/api-catalog
+        status: 404
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 404
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 404
+        file: null
+      - path: /.well-known/agent.json
+        status: 404
+        file: null
+  - host: docs.calendar-api.ma
+    note: GitLab Pages static host (CNAME ud-labs.gitlab.io) serving the Python SDK documentation.
+    probes:
+      - path: /.well-known/security.txt
+        status: 404
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 404
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+        file: null
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+        file: null
+      - path: /.well-known/api-catalog
+        status: 404
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 404
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 404
+        file: null
+      - path: /.well-known/agent.json
+        status: 404
+        file: null
+hit_count: 0
+also_probed:
+  - path: /robots.txt
+    host: calendar-api.ma
+    status: 200
+    note: Allows all crawlers on the public site; disallows /console/, /api/, /backoffice/. Declares the sitemap.
+  - path: /sitemap.xml
+    host: calendar-api.ma
+    status: 200
+    note: Nine public URLs.
+  - path: /llms.txt
+    host: calendar-api.ma
+    status: 404
+  - path: /llms.txt
+    host: docs.calendar-api.ma
+    status: 404

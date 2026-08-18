@@ -1,0 +1,46 @@
+generated: '2026-08-18'
+method: searched
+source: https://pypi.org/pypi/pycalendar-api/json + https://gitlab.com/ud-labs/py-calendar-api
+note: >-
+  One first-party client library. Source lives on GitLab (not GitHub) under the ud-labs group, which is
+  Unravel Designs' engineering namespace; the PyPI author field carries mfakir@unraveldesigns.ma and
+  ud@unraveldesigns.ma, and calendar-api.ma's homepage advertises `pip install pycalendar-api`, so
+  first-party ownership is confirmed on both ends. No JavaScript, Go, Java, .NET, Ruby, PHP or Rust client
+  is published — npm, RubyGems, crates.io, NuGet, Maven Central and pkg.go.dev were checked and none carry
+  a Calendar API client.
+packages:
+  - language: python
+    name: pycalendar-api
+    registry: pypi
+    official: true
+    url: https://pypi.org/project/pycalendar-api/
+    source: https://gitlab.com/ud-labs/py-calendar-api
+    docs: https://docs.calendar-api.ma
+    install: pip install pycalendar-api
+    version: 0.5.1
+    published: '2026-05-15'
+    license: MIT
+    requires_python: '>=3.12.0'
+    development_status: 4 - Beta
+    note: >-
+      Typed client built on standard dataclasses (no Pydantic) over the httpxyz HTTP client, configurable
+      via a .toml file. Six releases between 2026-03-05 and 2026-05-15; the API contract it wraps
+      (OpenAPI 3.1, v1) has not shipped a documented version bump since, so the SDK is current relative to
+      the API as published.
+package_count: 1
+official_count: 1
+registries_checked:
+  - registry: pypi
+    result: hit (pycalendar-api)
+  - registry: npm
+    result: no first-party package
+  - registry: rubygems
+    result: no first-party package
+  - registry: crates.io
+    result: no first-party package
+  - registry: nuget
+    result: no first-party package
+  - registry: maven-central
+    result: no first-party package
+  - registry: pkg.go.dev
+    result: no first-party package

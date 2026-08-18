@@ -1,0 +1,83 @@
+generated: '2026-08-18'
+method: derived
+source: >-
+  openapi/calendar-api-ma-calendar-api-openapi.yml (4xx
+  responses) + live probe of GET https://calendar-api.ma/api/v1/holidays/is-holiday without a key
+  (HTTP 401, 2026-08-18) + the SDK exception hierarchy at https://docs.calendar-api.ma/reference-docs/exceptions/
+format: custom
+rfc9457: false
+note: >-
+  Calendar API does NOT use RFC 9457 problem+json. Errors are a flat JSON object served as
+  application/json. The published spec declares a 400 on all 13 v1 operations (and none on /health);
+  no 401, 403, 404, 429 or 5xx response is declared, though a 401 is demonstrably returned live. There is
+  no error-code registry — `detail` is free text and there is no stable machine-readable code, so an agent
+  must branch on the HTTP status, not on a symbol.
+envelope:
+  media_type: application/json
+  fields:
+    - name: status_code
+      type: integer
+      required: true
+      description: Repeats the HTTP status code in the body.
+    - name: detail
+      type: string
+      required: true
+      description: Human-readable message. Free text; no stable machine-readable error code is published.
+    - name: extra
+      type: object|array|null
+      required: false
+      description: Optional additional context. Empty object in the published example.
+  example:
+    status_code: 400
+    detail: Bad Request
+    extra: {}
+problem_types:
+  - status: 400
+    title: Bad request syntax or unsupported method
+    declared_in_spec: true
+    operations: all 13 /api/v1/* operations
+    schema: Validation Exception
+    example:
+      status_code: 400
+      detail: Bad Request
+      extra: {}
+    remediation: >-
+      Validate parameter shapes before calling. Dates are supplied as strings; `year`, `month`, `day`,
+      `quarter` and `semester` are integers; `holiday_type` must be one of the CalHolidayType enum values
+      (ND, Religious, National, Exceptional) where ND disables the filter.
+  - status: 401
+    title: Missing or invalid API key
+    declared_in_spec: false
+    observed: true
+    observed_at: '2026-08-18'
+    observed_on: GET https://calendar-api.ma/api/v1/holidays/is-holiday?date=14/01/2025
+    example:
+      status_code: 401
+      detail: 'Auth Header = `X-API-KEY` not found in request header'
+    remediation: >-
+      Send the X-API-KEY header with an active key from https://calendar-api.ma/console/. Undeclared in the
+      OpenAPI — this is a spec gap worth reporting to the provider.
+client_exceptions:
+  note: >-
+    The first-party Python SDK maps transport and payload failures onto a typed exception hierarchy,
+    documented at https://docs.calendar-api.ma/reference-docs/exceptions/. These are client-side, not API
+    responses, but they are what a Python consumer actually catches.
+  hierarchy:
+    - name: CalendarAPIError
+      description: Base class for Calendar API client exceptions.
+    - name: CalendarAPIClientError
+      description: Errors from the underlying HTTP client.
+    - name: CalendarAPIAuthError
+      description: Client authentication errors.
+    - name: CalendarAPIStructError
+      description: Failure building a response model from the JSON payload.
+    - name: CalendarAPIParamError
+      description: Badly supplied parameters.
+    - name: CalendarAPIConfigError
+      description: Client configuration errors.
+    - name: UtilsError
+      description: Base exception of the utils module.
+gaps:
+  - No error-code registry or catalogue is published; `detail` is prose only.
+  - 401 is returned live but undeclared in the OpenAPI.
+  - No 404, 429 or 5xx responses are declared anywhere in the contract.

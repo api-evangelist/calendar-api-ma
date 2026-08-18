@@ -1,0 +1,34 @@
+generated: '2026-08-18'
+method: searched
+source: >-
+  https://calendar-api.ma/ + https://calendar-api.ma/holidays-api.html +
+  https://calendar-api.ma/bdays-api.html + https://docs.calendar-api.ma/ +
+  https://calendar-api.ma/api/v1/docs + live response headers on GET https://calendar-api.ma/health
+  and on a 401 from GET /api/v1/holidays/is-holiday (2026-08-18)
+limit_count: 0
+note: >-
+  Calendar API publishes NO rate limits. The marketing site, both product guides, the SDK documentation and
+  the OpenAPI description were all read and none states a request ceiling, quota, burst allowance or
+  throttling behaviour. No 429 response is declared anywhere in the spec. No RateLimit-*, X-RateLimit-* or
+  Retry-After header was returned on any observed response (200 on /health, 401 on an unauthenticated v1
+  call) — the observed header set is only Server, Date, Content-Type, Content-Length, Connection and a
+  csrftoken cookie. The only quantified account limit published anywhere is 5 API keys per account, which is
+  a key allowance, not a request rate. This matters more than usual here: the provider's own documented
+  integration pattern is HOURLY POLLING to watch a religious holiday flip from Estimated to Official, and a
+  consumer building that loop has no published budget to size it against.
+limits: []
+headers:
+  documented: []
+  observed: []
+exhaustion_status: unknown
+retry_after: not returned
+account_limits:
+  - name: api_keys_per_account
+    value: 5
+    unit: keys
+    source: https://calendar-api.ma/
+    note: Advertised on the homepage as "5 Clés API / compte". A provisioning limit, not a rate limit.
+recommendation_to_provider: >-
+  Publish a per-key request ceiling and return RateLimit-Limit / RateLimit-Remaining / RateLimit-Reset (or
+  Retry-After on 429), and declare 429 in the OpenAPI. Agents and orchestrators cannot self-govern against
+  an undocumented limit, and the documented hourly-polling pattern makes this a live concern.

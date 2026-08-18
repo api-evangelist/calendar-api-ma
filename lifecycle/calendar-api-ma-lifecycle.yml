@@ -1,0 +1,65 @@
+generated: '2026-08-18'
+method: searched
+source: >-
+  https://calendar-api.ma/schema/openapi.json + https://docs.calendar-api.ma/CHANGELOG/ +
+  https://gitlab.com/api/v4/projects/79644191/releases + https://calendar-api.ma/health +
+  https://calendar-api.ma/contacts.html
+note: >-
+  The API itself has no published lifecycle policy. The only versioning signal on the API is the URI
+  segment /api/v1/ and info.version "v1"; there is no changelog for the API, no deprecation or sunset
+  policy, no SLA and no status page. What IS published and dated is the Python SDK's lifecycle — a Keep a
+  Changelog file following Semantic Versioning, with six GitLab releases. Do not read SDK versioning as API
+  versioning; they are separate artifacts and only the SDK is versioned in public.
+api:
+  versioning:
+    scheme: uri-path
+    current: v1
+    evidence: 'All 13 business operations are namespaced under /api/v1/; OpenAPI info.version is "v1".'
+    policy_published: false
+  deprecation:
+    policy_published: false
+    sunset_header: unknown
+    deprecation_header: unknown
+    deprecated_operations: []
+    note: >-
+      No RFC 8594 Sunset/Deprecation policy is published. Every operation in the spec carries
+      deprecated:false at the parameter level; no operation is marked deprecated.
+  status_page:
+    published: false
+    note: >-
+      No status page exists — https://calendar-api.ma/status returns 404 and no status.* subdomain or
+      third-party status host is linked from the site. The API does expose an unauthenticated liveness
+      endpoint, GET /health, returning {"api_status":"UP","appname":"calendar-api"} (HTTP 200 observed
+      2026-08-18). A health endpoint is not a status page: it carries no incident history, no component
+      breakdown and no subscription channel.
+    health_endpoint: https://calendar-api.ma/health
+  sla:
+    published: false
+    note: >-
+      No public SLA. The contact page offers "SLA dédié" (dedicated SLA), white labeling and on-prem or
+      managed deployment as an enterprise conversation — https://calendar-api.ma/contacts.html — so terms
+      exist only under a sales discussion.
+  data_history:
+    note: >-
+      Holidays follow an SCD Type 2 history model. Religious holidays are qualified from 2006 onward and the
+      provider states coverage will be extended back to 1985. Future religious holidays carry status
+      "Estimated" until moon sighting confirms them, then flip to "Official"; the provider documents hourly
+      polling as the pattern for production systems that cannot tolerate a one-day shift.
+    source: https://docs.calendar-api.ma/how-it-works/
+sdk:
+  name: pycalendar-api
+  versioning:
+    scheme: semver
+    changelog_format: Keep a Changelog
+    current: 0.5.1
+    released: '2026-05-15'
+    changelog: https://docs.calendar-api.ma/CHANGELOG/
+    releases: https://gitlab.com/ud-labs/py-calendar-api/-/releases
+    first_release: '2026-03-05'
+    release_count: 6
+    development_status: 4 - Beta
+support:
+  email: support@calendar-api.ma
+  contact_page: https://calendar-api.ma/contacts.html
+  issues: https://gitlab.com/ud-labs/py-calendar-api/-/issues
+  note: SDK issues are tracked publicly on GitLab; API issues go to email/contact form only.

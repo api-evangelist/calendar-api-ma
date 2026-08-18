@@ -1,0 +1,47 @@
+generated: '2026-08-18'
+method: searched
+source: >-
+  https://calendar-api.ma/ + https://calendar-api.ma/holidays-api.html +
+  https://calendar-api.ma/bdays-api.html + https://calendar-api.ma/contacts.html +
+  https://calendar-api.ma/console/ + https://calendar-api.ma/sitemap.xml
+plan_count: 1
+note: >-
+  There is no pricing page. https://calendar-api.ma/pricing.html returns 404 and the sitemap lists no
+  pricing, plans or tarifs URL. What the provider does publish, repeatedly and in its own words across the
+  homepage and both product guides, is a single free self-serve access model: "Inscription gratuite · Pas de
+  carte bancaire" (free registration, no payment card) and "Créez votre compte gratuitement et obtenez une
+  clé API en 30 secondes". That is the one tier recorded below. No paid tier, quota, overage rate or usage
+  allowance is published anywhere — the API's request budget is simply not stated (see rate-limits). Beyond
+  the free tier the contact page invites an enterprise conversation covering a dedicated SLA, white
+  labeling, and on-premises or managed deployment, with no price attached, so enterprise terms are
+  sales-gated rather than published.
+currency: null
+plans:
+  - name: Free (self-serve)
+    price: 0
+    currency: null
+    billing_period: none
+    payment_card_required: false
+    signup: https://calendar-api.ma/console/register
+    included:
+      - Full access to all 14 published REST operations (holidays and business days).
+      - Up to 5 API keys per account.
+    quota: not published
+    overage: not published
+    rate_limit: not published
+    source: https://calendar-api.ma/
+enterprise:
+  published_price: false
+  contact: https://calendar-api.ma/contacts.html
+  offered:
+    - Dedicated SLA
+    - White labeling
+    - On-premises or managed deployment
+    - Custom integration
+  note: Listed on the contact page as a conversation ("parlons-en"), with no published terms or price.
+probes:
+  - url: https://calendar-api.ma/pricing.html
+    status: 404
+  - url: https://calendar-api.ma/sitemap.xml
+    status: 200
+    note: Nine URLs; none is a pricing page.

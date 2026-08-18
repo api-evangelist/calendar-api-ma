@@ -1,0 +1,50 @@
+name: API Calendrier Marocain | Jours Fériés & Ouvrables REST + SDK Python
+description: >-
+  REST API returning Moroccan public holidays (national, religious, exceptional) and business/open-day calculations,
+  with a typed Python SDK. Aimed at data engineers for ETL/orchestration pipelines (Airflow, Dagster).
+url: https://api-calendrier-marocain-jours-f-ri-s-ouvrables-rest-sdk-python.apievangelist.com/apis.yml
+created: '2026-08-18'
+modified: '2026-08-18'
+specificationVersion: '0.21'
+tags:
+  - holidays
+  - morocco
+  - calendar
+  - business-days
+  - date-utilities
+  - data-engineering
+  - ETL
+  - python-sdk
+  - localization
+apis:
+  - name: Calendar API (calendrier marocain)
+    description: >-
+      REST API for Moroccan public holidays and business day calculations, JSON over HTTPS with API-key auth, backed by
+      an OpenAPI 3.1 contract and an official Python SDK.
+    humanURL: https://docs.calendar-api.ma
+    baseURL: https://calendar-api.ma
+    tags:
+      - holidays
+      - morocco
+      - calendar
+      - business-days
+      - date-utilities
+      - data-engineering
+      - ETL
+      - python-sdk
+      - localization
+    properties:
+      - type: OpenAPI
+        url: https://calendar-api.ma/apis.json
+      - type: Documentation
+        url: https://docs.calendar-api.ma
+      - type: Documentation
+        url: https://calendar-api.ma/api/v1/docs
+maintainers:
+  - FN: Marouane Fakir
+    url: https://unraveldesigns.ma
+generated:
+  by: apis.io/add
+  model: claude-opus-4-8
+  confidence: 95
+  at: '2026-08-18T14:51:33.599Z'

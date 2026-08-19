@@ -14,7 +14,7 @@ url: https://calendar-api-ma.apievangelist.com/apis.yml
 image: https://calendar-api.ma/assets/img/logos/cal-api-logo%20small.webp
 created: '2026-08-18'
 modified: '2026-08-18'
-specificationVersion: '0.21'
+specificationVersion: '0.23'
 tags:
 - holidays
 - morocco

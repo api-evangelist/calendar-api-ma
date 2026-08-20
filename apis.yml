@@ -16,6 +16,19 @@ created: '2026-08-18'
 modified: '2026-08-18'
 specificationVersion: '0.23'
 tags:
+- Holidays
+- Morocco
+- Calendar
+- Business Days
+- date-utilities
+- Data Engineering
+- ETL
+- Python SDK
+- Localization
+- Reference Data
+- Public Holidays
+- Scheduling
+tags_raw:
 - holidays
 - morocco
 - calendar
@@ -66,7 +79,8 @@ apis:
   description: Misc endpoints
   humanURL: https://docs.calendar-api.ma
   baseURL: https://calendar-api.ma
-  tags:
+  tags: []
+  tags_raw:
   - Misc
   properties:
   - type: OpenAPI

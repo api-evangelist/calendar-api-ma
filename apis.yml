@@ -11,6 +11,18 @@ description: 'Calendar API is a REST service from Unravel Designs (Casablanca, M
   wiring Moroccan holiday logic into ETL pipelines and orchestrators such as Airflow and Dagster, and
   at regulated-market reporting where a hardcoded holiday table quietly goes stale every year.'
 url: https://calendar-api-ma.apievangelist.com/apis.yml
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://calendar-api.ma/assets/img/logos/cal-api-logo%20small.webp
 created: '2026-08-18'
 modified: '2026-08-18'

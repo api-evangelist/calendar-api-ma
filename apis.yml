@@ -28,18 +28,18 @@ created: '2026-08-18'
 modified: '2026-08-18'
 specificationVersion: '0.23'
 tags:
-- Holidays
-- Morocco
+- holidays
+- morocco
 - Calendar
-- Business Days
+- business-days
 - date-utilities
-- Data Engineering
+- data-engineering
 - ETL
-- Python SDK
+- python-sdk
 - Localization
-- Reference Data
-- Public Holidays
-- Scheduling
+- reference-data
+- public-holidays
+- scheduling
 tags_raw:
 - holidays
 - morocco

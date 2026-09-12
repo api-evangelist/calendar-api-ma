@@ -124,6 +124,8 @@ maintainers:
   email: mfakir@unraveldesigns.ma
   url: https://unraveldesigns.ma
 common:
+- type: Website
+  url: https://www.calendar-api.ma/
 - type: Overlay
   url: overlays/calendar-api-ma-calendar-api-overlay.yaml
 - type: DeveloperPortal

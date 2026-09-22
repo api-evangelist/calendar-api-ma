@@ -43,6 +43,9 @@ image: https://calendar-api.ma/assets/img/logos/cal-api-logo%20small.webp
 created: '2026-08-18'
 modified: '2026-08-18'
 specificationVersion: '0.23'
+x-docs-platform: mkdocs
+x-docs-platform-confidence: medium
+x-docs-platform-checked: 2026-09-21
 tags:
 - Holidays
 - Morocco

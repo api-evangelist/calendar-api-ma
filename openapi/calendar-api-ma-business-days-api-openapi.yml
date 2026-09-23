@@ -3,112 +3,12 @@ info:
   title: Calendar Business Days API
   version: v1
   summary: Calendar API for Moroccan Holidays and Open Business Days
-  description: '
-
-    ## Try Calendar API
+  description: '## Try Calendar API
 
 
     This interactive panel allows you to explore the whole API and to understand the different datastructures and parameters
 
-    used by every endpoint. You can also test every **active** APIKey you have.
-
-
-    ## Setup your APIKey
-
-
-    Copy any **active** APIKey from your console and set it in the `Authentication` side panel.
-
-
-    That''s it :-), now you can explore any endpoint
-
-
-    ## Holidays
-
-
-    This API allows to list, search and check if a `date` is a Moroccan holiday.
-
-
-    | Endpoint                 |                                                                                                                        Description |
-
-    | ------------------------ | :--------------------------------------------------------------------------------------------------------------------------------- |
-
-    | **/holidays/is-holiday** |                                                                                          Checks if a date is an `Official` Holiday |
-
-    | **/holidays/{year}**     |                                                                                                     List the holidays of the year. |
-
-    | **/holidays**            |  Lists all national Holidays. Since Morocco is a Kingdom, there are some Holidays that depend on the birthday of the current King. |
-
-
-    **N.B:**
-
-    Please note that if it''s a **future** `year`, the **religious holidays** are `Estimated` and not official because they depend on the moon sighting.
-
-
-    Once confirmed, the Holiday becomes `Official` and the adequate flag will be updated accordingly.
-
-
-    ## Business Days (bdays)
-
-
-    This API calculates the `next` and `previous` **Open Business Day** of a date. You can also get the Open Days for a whole year or any month of a year
-
-
-    | Endpoint                  | Description                                                                                     |
-
-    | ------------------------- | ----------------------------------------------------------------------------------------------- |
-
-    | **/bdays/{year}**         | Generate the Business days for the whole `year`                                                 |
-
-    | **/bdays/{year}/{month}** | Generate the Business days of a `month` of the `year`                                           |
-
-    | **/bdays/next**           | Calculate **the next** Open day relative to the provided `date`                                 |
-
-    | **/bdays/previous**       | Calculate **the previous** Open day relative to the provided `date`                             |
-
-    | **/bdays/count**          | Count the business days between 2 dates (included)                                              |
-
-    | **/bdays/between**        | List the business days between 2 dates (included)                                               |
-
-    | **/bdays/span/month**     | Calculate the interval (Start/End date) of a `month`. i.e: Interval of the month 5 of year 2025 |
-
-    | **/bdays/span/quarter**   | Calculate the interval (Start/End date) of a `quarter`. i.e: Interval of the Q2 of year 2024    |
-
-    | **/bdays/span/semester**  | Calculate the interval (Start/End date) of a `semester`. i.e: Interval of the S1 of year 2026   |
-
-    | **/bdays/span/year**      | Calculate the interval (Start/End date) of the `year`. i.e: Interval of the year 2021           |
-
-
-
-    ## Data dictionary
-
-
-    ### Holiday Type:
-
-
-    | Value           |                                                                  Description |
-
-    | --------------- | :--------------------------------------------------------------------------- |
-
-    | **National**    |                                               The date is a national Holiday |
-
-    | **Religious**   |  The date is a Religious Holiday (Check the status if it''s Confirmed or not) |
-
-    | **Exceptional** |                                           The date is an exceptional Holiday |
-
-
-    ### HolidayStatus (status)
-
-
-    | Value         |                                                Description |
-
-    | ------------- | :--------------------------------------------------------- |
-
-    | **Official**  |                                    The Holiday is Official |
-
-    | **Estimated** |  Religious Holidays are estimated before the moon sighting |
-
-
-    '
+    used by every endpoint.'
   contact:
     name: UNRAVEL DESIGNS
     url: https://unraveldesigns.ma
@@ -116,8 +16,8 @@ info:
   license:
     name: Proprietary
 servers:
-- url: https://calendar-api.ma
-  description: Casablanca (production) — resolved from the relative server "/" published in the original spec at https://calendar-api.ma/schema/openapi.json
+- url: /
+  description: Casablanca
 security:
 - apiKey: []
 - sessionCookie: []
@@ -834,44 +734,6 @@ paths:
       deprecated: false
 components:
   schemas:
-    DaysCount:
-      properties:
-        start_date:
-          type: string
-          format: date
-        end_date:
-          type: string
-          format: date
-        count:
-          type: integer
-        freq:
-          $ref: '#/components/schemas/CalFreq'
-      type: object
-      required:
-      - count
-      - end_date
-      - freq
-      - start_date
-      title: DaysCount
-    CalMode:
-      type: string
-      enum:
-      - D
-      - W
-      title: CalMode
-      description: "The Mode used by the Fin Calendar to calulate the reference dates of dynamic periods. i.e: 3:M, 23:W, 12:Y, ...\n\n    Enums:\n    - D: The calculation is based on open `dailies` dates. Similar to any Business days based calendar\n    - W: The calculation is based on the `weeklies` (**Fridays**). Returns the last weekdate related to the provided `period`\n    "
-    CalFreq:
-      type: string
-      enum:
-      - ND
-      - D
-      - W
-      - M
-      - Q
-      - S
-      - Y
-      title: CalFreq
-      description: "Frequency\n\n    Enums:\n        - D: DAILY\n        - W: WEEKLY\n        - M: MONTHLY\n        - Q: QUARTERLY\n        - S: SEMI-ANNUALLY\n        - Y: YEARLY\n    "
     SerieDatesEng:
       properties:
         ref:
@@ -895,19 +757,6 @@ components:
       required:
       - ref
       title: SerieDatesEng
-    PreviousDate:
-      properties:
-        date:
-          type: string
-          format: date
-        previous_date:
-          type: string
-          format: date
-      type: object
-      required:
-      - date
-      - previous_date
-      title: PreviousDate
     NextDate:
       properties:
         date:
@@ -921,6 +770,50 @@ components:
       - date
       - next_date
       title: NextDate
+    CalFreq:
+      type: string
+      enum:
+      - ND
+      - D
+      - W
+      - M
+      - Q
+      - S
+      - Y
+      title: CalFreq
+      description: "Frequency\n\n    Enums:\n        - D: DAILY\n        - W: WEEKLY\n        - M: MONTHLY\n        - Q: QUARTERLY\n        - S: SEMI-ANNUALLY\n        - Y: YEARLY\n    "
+    DaysCount:
+      properties:
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        count:
+          type: integer
+        freq:
+          $ref: '#/components/schemas/CalFreq'
+      type: object
+      required:
+      - count
+      - end_date
+      - freq
+      - start_date
+      title: DaysCount
+    PreviousDate:
+      properties:
+        date:
+          type: string
+          format: date
+        previous_date:
+          type: string
+          format: date
+      type: object
+      required:
+      - date
+      - previous_date
+      title: PreviousDate
     CalSpan:
       properties:
         start_date:
@@ -952,6 +845,13 @@ components:
       - start_date
       - year
       title: CalSpan
+    CalMode:
+      type: string
+      enum:
+      - D
+      - W
+      title: CalMode
+      description: "The Mode used by the Fin Calendar to calulate the reference dates of dynamic periods. i.e: 3:M, 23:W, 12:Y, ...\n\n    Enums:\n    - D: The calculation is based on open `dailies` dates. Similar to any Business days based calendar\n    - W: The calculation is based on the `weeklies` (**Fridays**). Returns the last weekdate related to the provided `period`\n    "
   securitySchemes:
     apiKey:
       type: apiKey

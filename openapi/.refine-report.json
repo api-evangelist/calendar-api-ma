@@ -1,21 +1,26 @@
 {
   "provider": "calendar-api-ma",
   "sources": [
-    "calendar-api-ma-calendar-api-openapi.yml"
+    "_original/calendar-api-ma-calendar-api-openapi.json"
   ],
   "outputs": [
     "calendar-api-ma-business-days-api-openapi.yml",
     "calendar-api-ma-holidays-api-openapi.yml",
     "calendar-api-ma-misc-api-openapi.yml"
   ],
-  "archived": [
-    "archived openapi/calendar-api-ma-calendar-api-openapi.yml"
-  ],
+  "archived": [],
   "errors": [],
   "warnings": [],
   "notes": [
-    "calendar-api-ma-calendar-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "apis.yml register: written (+3 apis, 3 total)"
+    "1 archived document(s) dropped as subsets of other archived documents",
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "calendar-api-ma-calendar-api-openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
   ],
-  "skipped": []
+  "skipped": [
+    "_original/calendar-api-ma-calendar-api-openapi.yml: archived document superseded by a larger archived document",
+    "calendar-api-ma-business-days-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "calendar-api-ma-holidays-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "calendar-api-ma-misc-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

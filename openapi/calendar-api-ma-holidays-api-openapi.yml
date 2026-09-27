@@ -432,30 +432,6 @@ components:
       - Official
       title: CalHolidayStatus
       description: "Represents the status of religious holidays which are based on moon sightings.\n\n    At the start of the year, Religious holydays are **Estimated**. When the official moon sighting is confirmed the status is changed to **Official**\n\n    NB: The change may **shift the `Estimated` date by ONE DAY**\n\n    All other Holiday types are Official by default\n\n    Attributes:\n        - ND: Not defined for the entity or unknown by us (very unlikely)\n        - Official (str): The holiday is validated and thus Official\n        - Estimated (str): The holiday is estimated before the moon sighting\n    "
-    IsHoliday:
-      properties:
-        date:
-          type: string
-          format: date
-        is_holiday:
-          type: boolean
-        description:
-          type: string
-        holiday_type:
-          $ref: '#/components/schemas/CalHolidayType'
-        status:
-          $ref: '#/components/schemas/CalHolidayStatus'
-        country_code:
-          type: string
-      type: object
-      required:
-      - country_code
-      - date
-      - description
-      - holiday_type
-      - is_holiday
-      - status
-      title: IsHoliday
     CalHolidayType:
       type: string
       enum:
@@ -497,6 +473,30 @@ components:
       required:
       - description
       title: Holiday
+    IsHoliday:
+      properties:
+        date:
+          type: string
+          format: date
+        is_holiday:
+          type: boolean
+        description:
+          type: string
+        holiday_type:
+          $ref: '#/components/schemas/CalHolidayType'
+        status:
+          $ref: '#/components/schemas/CalHolidayStatus'
+        country_code:
+          type: string
+      type: object
+      required:
+      - country_code
+      - date
+      - description
+      - holiday_type
+      - is_holiday
+      - status
+      title: IsHoliday
   securitySchemes:
     apiKey:
       type: apiKey

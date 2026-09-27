@@ -77,7 +77,6 @@ apis:
   name: API Calendrier Marocain | Jours Fériés & Ouvrables REST + SDK Python Business Days API
   description: National Open business days
   humanURL: https://docs.calendar-api.ma
-  baseURL: https://calendar-api.ma
   tags:
   - Business Days
   properties:
@@ -93,7 +92,6 @@ apis:
   name: API Calendrier Marocain | Jours Fériés & Ouvrables REST + SDK Python Holidays API
   description: National holidays of any year and Religious holidays of past years
   humanURL: https://docs.calendar-api.ma
-  baseURL: https://calendar-api.ma
   tags:
   - Holidays
   properties:
@@ -109,7 +107,6 @@ apis:
   name: API Calendrier Marocain | Jours Fériés & Ouvrables REST + SDK Python Misc API
   description: Misc endpoints
   humanURL: https://docs.calendar-api.ma
-  baseURL: https://calendar-api.ma
   tags: []
   tags_raw:
   - Misc

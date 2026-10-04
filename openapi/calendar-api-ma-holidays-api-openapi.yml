@@ -424,55 +424,6 @@ paths:
       deprecated: false
 components:
   schemas:
-    CalHolidayStatus:
-      type: string
-      enum:
-      - ND
-      - Estimated
-      - Official
-      title: CalHolidayStatus
-      description: "Represents the status of religious holidays which are based on moon sightings.\n\n    At the start of the year, Religious holydays are **Estimated**. When the official moon sighting is confirmed the status is changed to **Official**\n\n    NB: The change may **shift the `Estimated` date by ONE DAY**\n\n    All other Holiday types are Official by default\n\n    Attributes:\n        - ND: Not defined for the entity or unknown by us (very unlikely)\n        - Official (str): The holiday is validated and thus Official\n        - Estimated (str): The holiday is estimated before the moon sighting\n    "
-    CalHolidayType:
-      type: string
-      enum:
-      - ND
-      - Religious
-      - National
-      - Exceptional
-      title: CalHolidayType
-      description: 'There are Three Types of holidays:
-
-        - **Religious**: Include only Religious holidays. i.e: Eid el fitr, ...
-
-        - **National**: Include only National holidays. i.e: Fête du travail, Fête du trône, ...
-
-        - **Exceptional**: Include only Exceptional holidays.
-
-        - **ND::Null**: Disable this filter'
-      default: ND
-      examples:
-      - ND
-    Holiday:
-      properties:
-        description:
-          type: string
-        day:
-          type: integer
-        month:
-          type: integer
-        date:
-          type: 'null'
-        holiday_type:
-          $ref: '#/components/schemas/CalHolidayType'
-        country_code:
-          type: string
-          default: MA
-        status:
-          $ref: '#/components/schemas/CalHolidayStatus'
-      type: object
-      required:
-      - description
-      title: Holiday
     IsHoliday:
       properties:
         date:
@@ -497,6 +448,55 @@ components:
       - is_holiday
       - status
       title: IsHoliday
+    Holiday:
+      properties:
+        description:
+          type: string
+        day:
+          type: integer
+        month:
+          type: integer
+        date:
+          type: 'null'
+        holiday_type:
+          $ref: '#/components/schemas/CalHolidayType'
+        country_code:
+          type: string
+          default: MA
+        status:
+          $ref: '#/components/schemas/CalHolidayStatus'
+      type: object
+      required:
+      - description
+      title: Holiday
+    CalHolidayType:
+      type: string
+      enum:
+      - ND
+      - Religious
+      - National
+      - Exceptional
+      title: CalHolidayType
+      description: 'There are Three Types of holidays:
+
+        - **Religious**: Include only Religious holidays. i.e: Eid el fitr, ...
+
+        - **National**: Include only National holidays. i.e: Fête du travail, Fête du trône, ...
+
+        - **Exceptional**: Include only Exceptional holidays.
+
+        - **ND::Null**: Disable this filter'
+      default: ND
+      examples:
+      - ND
+    CalHolidayStatus:
+      type: string
+      enum:
+      - ND
+      - Estimated
+      - Official
+      title: CalHolidayStatus
+      description: "Represents the status of religious holidays which are based on moon sightings.\n\n    At the start of the year, Religious holydays are **Estimated**. When the official moon sighting is confirmed the status is changed to **Official**\n\n    NB: The change may **shift the `Estimated` date by ONE DAY**\n\n    All other Holiday types are Official by default\n\n    Attributes:\n        - ND: Not defined for the entity or unknown by us (very unlikely)\n        - Official (str): The holiday is validated and thus Official\n        - Estimated (str): The holiday is estimated before the moon sighting\n    "
   securitySchemes:
     apiKey:
       type: apiKey

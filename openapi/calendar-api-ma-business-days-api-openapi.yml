@@ -734,32 +734,41 @@ paths:
       deprecated: false
 components:
   schemas:
-    CalMode:
+    CalFreq:
       type: string
       enum:
+      - ND
       - D
       - W
-      title: CalMode
-      description: "The Mode used by the Fin Calendar to calulate the reference dates of dynamic periods. i.e: 3:M, 23:W, 12:Y, ...\n\n    Enums:\n    - D: The calculation is based on open `dailies` dates. Similar to any Business days based calendar\n    - W: The calculation is based on the `weeklies` (**Fridays**). Returns the last weekdate related to the provided `period`\n    "
-    DaysCount:
+      - M
+      - Q
+      - S
+      - Y
+      title: CalFreq
+      description: "Frequency\n\n    Enums:\n        - D: DAILY\n        - W: WEEKLY\n        - M: MONTHLY\n        - Q: QUARTERLY\n        - S: SEMI-ANNUALLY\n        - Y: YEARLY\n    "
+    SerieDatesEng:
       properties:
-        start_date:
+        ref:
+          type: string
+        min_date:
           type: string
           format: date
-        end_date:
+        max_date:
           type: string
           format: date
-        count:
-          type: integer
         freq:
           $ref: '#/components/schemas/CalFreq'
+        nitems:
+          type: integer
+        serie:
+          items:
+            type: string
+            format: date
+          type: array
       type: object
       required:
-      - count
-      - end_date
-      - freq
-      - start_date
-      title: DaysCount
+      - ref
+      title: SerieDatesEng
     CalSpan:
       properties:
         start_date:
@@ -791,29 +800,6 @@ components:
       - start_date
       - year
       title: CalSpan
-    SerieDatesEng:
-      properties:
-        ref:
-          type: string
-        min_date:
-          type: string
-          format: date
-        max_date:
-          type: string
-          format: date
-        freq:
-          $ref: '#/components/schemas/CalFreq'
-        nitems:
-          type: integer
-        serie:
-          items:
-            type: string
-            format: date
-          type: array
-      type: object
-      required:
-      - ref
-      title: SerieDatesEng
     PreviousDate:
       properties:
         date:
@@ -827,18 +813,32 @@ components:
       - date
       - previous_date
       title: PreviousDate
-    CalFreq:
+    DaysCount:
+      properties:
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        count:
+          type: integer
+        freq:
+          $ref: '#/components/schemas/CalFreq'
+      type: object
+      required:
+      - count
+      - end_date
+      - freq
+      - start_date
+      title: DaysCount
+    CalMode:
       type: string
       enum:
-      - ND
       - D
       - W
-      - M
-      - Q
-      - S
-      - Y
-      title: CalFreq
-      description: "Frequency\n\n    Enums:\n        - D: DAILY\n        - W: WEEKLY\n        - M: MONTHLY\n        - Q: QUARTERLY\n        - S: SEMI-ANNUALLY\n        - Y: YEARLY\n    "
+      title: CalMode
+      description: "The Mode used by the Fin Calendar to calulate the reference dates of dynamic periods. i.e: 3:M, 23:W, 12:Y, ...\n\n    Enums:\n    - D: The calculation is based on open `dailies` dates. Similar to any Business days based calendar\n    - W: The calculation is based on the `weeklies` (**Fridays**). Returns the last weekdate related to the provided `period`\n    "
     NextDate:
       properties:
         date:

@@ -1,0 +1,12 @@
+{
+ "url": "https://calendar-api.ma/schema/openapi.json",
+ "requested_url": "https://calendar-api.ma/schema/openapi.json",
+ "status": 200,
+ "content_type": "application/vnd.oai.openapi+json",
+ "bytes": 32950,
+ "sha256": "194a8764a4610b830891065cf205feeeef5a8e29f0a23f2ee187ea9f92772e5b",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "equivalent",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the provider's current document describes the same operations (Jaccard 0.933), but the bytes differ, so the archive is an earlier or reformatted copy."
+}

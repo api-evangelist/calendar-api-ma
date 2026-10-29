@@ -1,4 +1,4 @@
-# calendar-api-ma
+# API Calendrier Marocain | Jours Fériés & Ouvrables REST + SDK Python
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,4 +64,118 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-REST API returning Moroccan public holidays (national, religious, exceptional) and business/open-day calculations, with a typed Python SDK. Aimed at data engineers for ETL/orchestration pipelines (Airflow, Dagster).
+Calendar API is a REST service from Unravel Designs (Casablanca, Morocco) that turns the Moroccan economic calendar into a callable contract. It returns national, religious and exceptional public holidays with an explicit Estimated/Official status — religious feasts are dated astronomically and only become Official after moon sighting — and it calculates open business days: next and previous working day, counts and listings between two dates, and CalSpan, a chainable business-day [start_date, end_date] interval for a month, quarter, semester or year that drops straight into a SQL BETWEEN. Fourteen read-only GET operations are described by a published OpenAPI 3.1 document, authenticated with an X-API-KEY header, and wrapped by a typed first-party Python SDK (pycalendar-api). It is aimed at data engineers wiring Moroccan holiday logic into ETL pipelines and orchestrators such as Airflow and Dagster, and at regulated-market reporting where a hardcoded holiday table quietly goes stale every year.
+
+**Areas:** Holidays · Morocco · Calendar · Business Days · date-utilities · Data Engineering · ETL · Python SDK · Localization · Reference Data · Public Holidays · Scheduling
+
+## API Calendrier Marocain | Jours Fériés & Ouvrables REST + SDK Python on APIs.io
+
+Everything profiled for API Calendrier Marocain | Jours Fériés & Ouvrables REST + SDK Python is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/calendar-api-ma/](https://apis.io/providers/calendar-api-ma/)** — or go straight to one of the APIs or properties below.
+
+### APIs (3)
+
+- [API Calendrier Marocain | Jours Fériés & Ouvrables REST + SDK Python Business Days API](https://apis.io/apis/calendar-api-ma/calendar-api-ma-business-days-api/) — National Open business days
+- [API Calendrier Marocain | Jours Fériés & Ouvrables REST + SDK Python Holidays API](https://apis.io/apis/calendar-api-ma/calendar-api-ma-holidays-api/) — National holidays of any year and Religious holidays of past years
+- [API Calendrier Marocain | Jours Fériés & Ouvrables REST + SDK Python Misc API](https://apis.io/apis/calendar-api-ma/calendar-api-ma-misc-api/) — Misc endpoints
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [calendar-api-ma-mcp.yml](https://apis.io/servers/calendar-api-ma/calendar-api-ma-mcp-yml/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Calendar Api Ma Calendar Api Overlay](https://apis.io/overlays/calendar-api-ma/calendar-api-ma-calendar-api-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Calendar Api Ma Authentication](https://apis.io/security/calendar-api-ma/calendar-api-ma-authentication/)
+- [Calendar Api Ma Domain Security](https://apis.io/security/calendar-api-ma/calendar-api-ma-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Calendar Api Ma Plans Pricing](https://apis.io/plans/calendar-api-ma/calendar-api-ma-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Calendar Api Ma Rate Limits](https://apis.io/rate-limits/calendar-api-ma/calendar-api-ma-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.calendar-api.ma/)
+- [Documentation](https://docs.calendar-api.ma)
+- [Getting started](https://calendar-api.ma/holidays-api.html)
+- [API reference](https://calendar-api.ma/api/v1/docs)
+- [Sign up](https://calendar-api.ma/console/register)
+- [Support](https://calendar-api.ma/contacts.html)
+- [Privacy policy](https://calendar-api.ma/privacy.html)
+
+## API Evangelist rating
+
+**Kin Score 44.4** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 57.1 |
+| Contract quality | 48.8 |
+| Contract governance | 4.5 |
+| Operational transparency | 21.1 |
+| Developer ergonomics | 68.5 |
+| Access clarity | 44.7 |
+
+**Agent readiness 29.1** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | na |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | na |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | na |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 17.2** — Energy & Utilities
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/calendar-api-ma/](https://apis.io/providers/calendar-api-ma/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for API Calendrier Marocain | Jours Fériés & Ouvrables REST + SDK Python: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/calendar-api-ma/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
